@@ -8,6 +8,7 @@ import Budget from './pages/Budget';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
 import Extensions from './pages/Extensions';
+import About from './pages/About';
 import { useState } from 'react';
 
 function App() {
@@ -79,8 +80,8 @@ function App() {
                 <div className="relative">
                   <button
                     onClick={toggleDropdown}
-                    className="flex items-center p-1.5 text-purple-500 hover:text-purple-600 focus:outline-none transition-colors duration-200 rounded-full hover:bg-purple-50"
-                    style={{ colorScheme: 'light', color: 'rgb(168, 85, 247)' }}
+                    className="flex items-center p-1.5 bg-purple-50 text-purple-500 hover:text-purple-600 hover:bg-purple-100 focus:outline-none transition-all duration-200 rounded-full"
+                    style={{ colorScheme: 'light' }}
                   >
                     <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 24 24" fill="currentColor">
                       <path fillRule="evenodd" d="M18.685 19.097A9.723 9.723 0 0021.75 12c0-5.385-4.365-9.75-9.75-9.75S2.25 6.615 2.25 12a9.723 9.723 0 003.065 7.097A9.716 9.716 0 0012 21.75a9.716 9.716 0 006.685-2.653zm-12.54-1.285A7.486 7.486 0 0112 15a7.486 7.486 0 015.855 2.812A8.224 8.224 0 0112 20.25a8.224 8.224 0 01-5.855-2.438zM15.75 9a3.75 3.75 0 11-7.5 0 3.75 3.75 0 017.5 0z" clipRule="evenodd" />
@@ -91,36 +92,36 @@ function App() {
                     <div className="absolute right-0 mt-2 w-48 bg-white rounded-lg shadow-lg py-1 z-50 border border-purple-100 transform transition-all duration-200 ease-out" style={{ colorScheme: 'light' }}>
                       <Link
                         to="/signup"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
+                        className="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
                         onClick={() => setIsDropdownOpen(false)}
-                        style={{ colorScheme: 'light', color: 'rgb(55, 65, 81)' }}
+                        style={{ backgroundColor: 'white', color: 'rgb(55, 65, 81)' }}
                       >
                         Sign Up
                       </Link>
                       <Link
                         to="/login"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
+                        className="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
                         onClick={() => setIsDropdownOpen(false)}
-                        style={{ colorScheme: 'light', color: 'rgb(55, 65, 81)' }}
+                        style={{ backgroundColor: 'white', color: 'rgb(55, 65, 81)' }}
                       >
                         Login
                       </Link>
                       <Link
                         to="/about"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
+                        className="block px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
                         onClick={() => setIsDropdownOpen(false)}
-                        style={{ colorScheme: 'light', color: 'rgb(55, 65, 81)' }}
+                        style={{ backgroundColor: 'white', color: 'rgb(55, 65, 81)' }}
                       >
                         About
                       </Link>
                       <button
-                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
+                        className="block w-full text-left px-4 py-2 text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
                         onClick={() => {
                           navigator.clipboard.writeText('nxtcarson@gmail.com');
                           setIsDropdownOpen(false);
                           alert('Email copied to clipboard!');
                         }}
-                        style={{ colorScheme: 'light', color: 'rgb(55, 65, 81)' }}
+                        style={{ backgroundColor: 'white', color: 'rgb(55, 65, 81)' }}
                       >
                         Contact
                       </button>
@@ -144,6 +145,7 @@ function App() {
             <Route path="/budget" element={<Budget />} />
             <Route path="/login" element={<Login />} />
             <Route path="/signup" element={<SignUp />} />
+            <Route path="/about" element={<About />} />
           </Routes>
         </main>
 
