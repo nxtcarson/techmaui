@@ -4,42 +4,42 @@ function Tools() {
   const defaultTools = [
     {
       name: "ChatGPT",
-      description: "Advanced AI chatbot for homework help, writing assistance, and general knowledge.",
-      icon: "/icons/chatgpt.png",
-      category: "AI Assistant",
+      description: "AI-powered chat assistant for writing, research, and problem-solving.",
+      icon: "/icons/tools/chatgpt.png",
+      category: "AI",
       url: "https://chat.openai.com",
       requiresAdBlock: false
     },
     {
       name: "Microsoft Activation",
-      description: "PowerShell script for Windows/Office activation. Click to view step-by-step instructions.",
-      icon: "/icons/windows.png",
+      description: "PowerShell script for Windows/Office activation. Run 'irm https://get.activated.win | iex' in PowerShell as admin.",
+      icon: "/icons/tools/windows.png",
       category: "System",
-      url: "/activation.html",
+      url: "https://get.activated.win",
       requiresAdBlock: false,
-      warning: "⚠️ Make sure to run PowerShell as Administrator before running the activation command"
+      warning: "⚠️ Instructions: 1) Right-click Windows Start Menu 2) Select PowerShell/Terminal as Admin 3) Paste the command 4) Select HWID(1) for Windows or Ohook(2) for Office"
     },
     {
       name: "SponsorBlock",
-      description: "Browser extension to automatically skip sponsored segments in YouTube videos. Community-driven and time-saving.",
-      icon: "/icons/sponsorblock.png",
+      description: "Skip sponsored segments in YouTube videos automatically.",
+      icon: "/icons/tools/sponsorblock.png",
       category: "Browser Extension",
       url: "https://sponsor.ajay.app",
       requiresAdBlock: false
     },
     {
       name: "SpotX",
-      description: "Modified Spotify desktop client patcher for Windows. Removes ads and enables premium features.",
-      icon: "/icons/spotx.png",
-      category: "System",
-      url: "https://github.com/SpotX-Official/SpotX",
+      description: "Modified Spotify desktop client patcher for Windows.",
+      icon: "/icons/tools/spotx.png",
+      category: "Windows",
+      url: "https://github.com/amd64fox/SpotX",
       requiresAdBlock: false,
-      warning: "⚠️ Only for Windows Desktop Spotify (not Microsoft Store version). Use at your own risk."
+      warning: "⚠️ Use at your own risk. Follow instructions carefully."
     },
     {
       name: "xManager",
       description: "Modified Spotify app manager for Android. Install ad-free versions with premium features.",
-      icon: "/icons/xmanager.png",
+      icon: "/icons/tools/xmanager.png",
       category: "Android",
       url: "https://github.com/xManager-App/xManager",
       requiresAdBlock: false,
@@ -47,91 +47,91 @@ function Tools() {
     },
     {
       name: "Mobilism",
-      description: "Community forum for modded Android apps and games. Trusted source for modified applications.",
-      icon: "/icons/mobilism.png",
+      description: "Community forum for modded Android apps and games.",
+      icon: "/icons/tools/mobilism.png",
       category: "Android",
       url: "https://forum.mobilism.org",
       requiresAdBlock: true,
-      warning: "⚠️ Always scan downloads with antivirus and use official apps when possible"
+      warning: "⚠️ Always scan downloads. Use AdBlock for safe browsing."
     },
     {
       name: "IHaveNoTV",
-      description: "Free documentary streaming platform with a vast collection of educational content.",
-      icon: "/icons/ihavenotv.png",
+      description: "Free documentary streaming platform with a vast collection.",
+      icon: "/icons/tools/ihavenotv.png",
       category: "Streaming",
       url: "https://ihavenotv.com",
       requiresAdBlock: true
     },
     {
       name: "STEAMRIP",
-      description: "Game download portal for PC games. Direct downloads available.",
-      icon: "/icons/steamrip.png",
+      description: "Download portal for PC games. Clean files, no mining.",
+      icon: "/icons/tools/steamrip.png",
       category: "Games",
       url: "https://steamrip.com",
       requiresAdBlock: true,
-      warning: "⚠️ Use antivirus and scan downloads. AdBlock required for safe browsing."
+      warning: "⚠️ Use antivirus and scan downloads. AdBlock required."
     },
     {
       name: "FitGirl Repacks",
-      description: "Highly compressed game repacks. Trusted source for PC game downloads.",
-      icon: "/icons/fitgirl.png",
+      description: "Highly compressed game repacks. Trusted and reliable.",
+      icon: "/icons/tools/fitgirl.png",
       category: "Games",
       url: "https://fitgirl-repacks.site",
       requiresAdBlock: true,
-      warning: "⚠️ Only download torrents on home network. VPN recommended for popular downloads."
+      warning: "⚠️ Use VPN when downloading torrents. Not on home/school network."
     },
     {
-      name: "Quillbot",
-      description: "AI-powered paraphrasing tool to help improve your writing.",
-      icon: "/icons/quillbot.png",
+      name: "QuillBot",
+      description: "AI writing and paraphrasing tool for better writing.",
+      icon: "/icons/tools/quillbot.png",
       category: "Writing",
       url: "https://quillbot.com",
-      requiresAdBlock: true
+      requiresAdBlock: false
     },
     {
       name: "Anna's Archive",
-      description: "Search engine for books, papers, comics, magazines, and more.",
-      icon: "/icons/annas.png",
-      category: "Research",
+      description: "Search engine for books, papers, comics, magazines.",
+      icon: "/icons/tools/annas.png",
+      category: "Books",
       url: "https://annas-archive.org",
-      requiresAdBlock: true
+      requiresAdBlock: false
     },
     {
-      name: "LibGen",
-      description: "Find and download educational books and textbooks.",
-      icon: "/icons/libgen.png",
+      name: "Library Genesis",
+      description: "Free access to millions of books and articles.",
+      icon: "/icons/tools/libgen.png",
       category: "Books",
       url: "https://libgen.is",
       requiresAdBlock: true
     },
     {
       name: "Symbolab",
-      description: "Advanced math problem solver with step-by-step solutions for algebra, calculus, and more.",
-      icon: "/icons/symbolab.png",
+      description: "Step-by-step math problem solver with explanations.",
+      icon: "/icons/tools/symbolab.png",
       category: "Math",
       url: "https://www.symbolab.com",
-      requiresAdBlock: true
+      requiresAdBlock: false
     },
     {
       name: "MathPapa",
-      description: "Free algebra calculator with step-by-step explanations for solving equations.",
-      icon: "/icons/mathpapa.png",
+      description: "Algebra calculator and solver with detailed steps.",
+      icon: "/icons/tools/mathpapa.png",
       category: "Math",
-      url: "https://www.mathpapa.com/algebra-calculator.html",
-      requiresAdBlock: true
+      url: "https://www.mathpapa.com",
+      requiresAdBlock: false
     },
     {
       name: "Clever",
       description: "School resource portal for accessing educational tools and applications.",
-      icon: "/icons/clever.png",
+      icon: "/icons/tools/clever.png",
       category: "School",
       url: "https://clever.com",
-      requiresAdBlock: false
+      requiresAdBlock: false 
     },
     {
       name: "Rivestream",
       description: "Stream movies, TV shows, K-dramas, and anime. Ad-free streaming experience.",
-      icon: "/icons/rivestream.png",
+      icon: "/icons/tools/rivestream.png",
       category: "Streaming",
       url: "https://rivestream.live",
       requiresAdBlock: true,
@@ -140,7 +140,7 @@ function Tools() {
     {
       name: "Miruro",
       description: "Watch anime, movies, and TV shows online. High-quality streaming service.",
-      icon: "/icons/miruro.png",
+      icon: "/icons/tools/miruro.png",
       category: "Streaming",
       url: "https://www.miruro.tv",
       requiresAdBlock: true,
@@ -276,11 +276,11 @@ function Tools() {
           <p className="text-xl text-gray-600">
             Essential websites and tools to enhance your learning experience.
           </p>
-        </div>
+          </div>
 
         {/* View Toggle and Favorites Filter */}
         <div className="flex justify-end items-center mb-4">
-          <button
+            <button
             onClick={() => setSelectedCategory(favorites.length ? 'favorites' : 'all')}
             className={`flex items-center gap-2 px-4 py-2 rounded ${
               selectedCategory === 'favorites' ? 'bg-purple-600 text-white' : 'bg-gray-100'
@@ -288,9 +288,9 @@ function Tools() {
           >
             <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
               <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-            </svg>
+              </svg>
             Favorites ({favorites.length})
-          </button>
+            </button>
         </div>
 
         {/* Search and Filter Section */}
@@ -315,7 +315,7 @@ function Tools() {
                 d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
                 clipRule="evenodd"
               />
-            </svg>
+              </svg>
           </div>
 
           {/* Category Filter */}
@@ -331,7 +331,7 @@ function Tools() {
                 }`}
               >
                 {category.name}
-              </button>
+            </button>
             ))}
           </div>
         </div>
@@ -354,7 +354,7 @@ function Tools() {
                   >
                     Install uBlock Origin →
                   </a>
-                </div>
+              </div>
               </div>
             </div>
           </div>
@@ -372,7 +372,7 @@ function Tools() {
                     src={tool.icon}
                     alt={`${tool.name} icon`}
                     className="w-12 h-12 rounded-lg"
-                    onError={(e) => {
+                  onError={(e) => {
                       e.target.src = 'https://via.placeholder.com/48?text=' + tool.name[0];
                     }}
                   />
@@ -408,7 +408,7 @@ function Tools() {
                           <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                             <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
                             <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                          </svg>
+                    </svg>
                         </button>
                       </div>
                     </div>
@@ -428,12 +428,12 @@ function Tools() {
                 {tool.requiresAdBlock && !hasUblock && (
                   <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
                     ⚠️ This site requires uBlock Origin for safe access
-                  </div>
+              </div>
                 )}
                 <a
                   href={tool.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
+                      target="_blank"
+                      rel="noopener noreferrer"
                   className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
                 >
                   <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
