@@ -2,11 +2,74 @@
 
 A comprehensive guide to essential tools, extensions, and resources that make school tech work better.
 
-## Features
+## 🚀 Features
 
-- 🚫 **Ad Blocking Guide**: Step-by-step instructions for setting up uBlock Origin
-- 🔧 **Browser Extensions**: Curated collection of essential extensions for productivity and learning
-- 🛠️ **Useful Tools**: Hand-picked tools and resources to enhance your learning experience
+| Category | Description |
+|----------|-------------|
+| 🛡️ **Ad Blocking** | Block unwanted ads with uBlock Origin |
+| 🔧 **Extensions** | Curated browser extensions for productivity |
+| 🛠️ **Tools** | Essential software and online resources |
+| 📚 **Study** | Study methods and productivity tools |
+| 📖 **Research** | Academic research and citation tools |
+| 💰 **Budget** | Money-saving tips and financial tools |
+
+## 🔧 Quick Setup
+
+```bash
+git clone https://github.com/nxtcarson/techmaui.git
+cd techmaui
+npm install
+npm run dev
+```
+
+## 💻 Development
+
+### Tech Stack
+- **Frontend**: React, React Router
+- **Styling**: Tailwind CSS
+- **Build**: Vite
+- **Linting**: ESLint
+
+### Available Scripts
+```bash
+npm run dev      # Start development server
+npm run build    # Build for production
+npm run preview  # Preview production build
+npm run lint     # Run ESLint
+```
+
+### Project Structure
+```
+techmaui/
+├── src/
+│   ├── pages/          # Page components
+│   │   ├── Home
+│   │   ├── AdBlocking
+│   │   ├── Tools
+│   │   ├── Extensions
+│   │   ├── Study
+│   │   ├── Research
+│   │   ├── Budget
+│   │   ├── Login
+│   │   └── SignUp
+│   ├── components/     # Shared components
+│   └── App.jsx        # Main component
+└── public/           # Static assets
+```
+
+## 🤝 Contributing
+1. Fork the repository
+2. Create feature branch: `git checkout -b feature/NewFeature`
+3. Commit changes: `git commit -m 'Add NewFeature'`
+4. Push to branch: `git push origin feature/NewFeature`
+5. Open a Pull Request
+
+## 📝 License
+MIT License - see [LICENSE](LICENSE)
+
+## 📞 Support
+- Open an issue on GitHub
+- Contact: nxtcarson@gmail.com
 
 ## Prerequisites
 
@@ -15,63 +78,6 @@ Before you begin, ensure you have the following installed:
 - [npm](https://www.npmjs.com/) (usually comes with Node.js)
 - A modern web browser (Chrome, Firefox, or Edge)
 - [Git](https://git-scm.com/) for version control
-
-## Setup Instructions
-
-1. **Clone the Repository**
-   ```bash
-   git clone https://github.com/nxtcarson/techmaui.git
-   cd techmaui
-   ```
-
-2. **Install Dependencies**
-   ```bash
-   npm install
-   ```
-
-3. **Start Development Server**
-   ```bash
-   npm run dev
-   ```
-   The site will be available at `http://localhost:5173` (or another port if 5173 is in use)
-
-4. **Build for Production** (optional)
-   ```bash
-   npm run build
-   ```
-   The built files will be in the `dist` directory
-
-## Development
-
-### Project Structure
-```
-techmaui/
-├── src/                # Source code
-│   ├── pages/         # Page components
-│   ├── components/    # Reusable components
-│   ├── App.jsx        # Main application component
-│   └── main.jsx       # Entry point
-├── public/            # Static assets
-├── index.html         # HTML template
-├── package.json       # Dependencies and scripts
-├── tailwind.config.js # Tailwind CSS configuration
-├── postcss.config.js  # PostCSS configuration
-└── vite.config.js     # Vite configuration
-```
-
-### Available Scripts
-
-- `npm run dev`: Start development server
-- `npm run build`: Build for production
-- `npm run preview`: Preview production build
-- `npm run lint`: Run ESLint for code quality
-
-### Technologies Used
-
-- **React**: Frontend library
-- **React Router**: Navigation
-- **Tailwind CSS**: Styling
-- **Vite**: Build tool and development server
 
 ## Troubleshooting
 
@@ -106,25 +112,6 @@ techmaui/
   ```bash
   chmod +x node_modules/.bin/*
   ```
-
-## Contributing
-
-1. Fork the repository
-2. Create your feature branch: `git checkout -b feature/AmazingFeature`
-3. Commit your changes: `git commit -m 'Add some AmazingFeature'`
-4. Push to the branch: `git push origin feature/AmazingFeature`
-5. Open a Pull Request
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
-
-## Support
-
-If you encounter any issues or have questions:
-1. Check the [Troubleshooting](#troubleshooting) section
-2. Open an issue on GitHub
-3. Contact the maintainers
 
 ## Acknowledgments
 

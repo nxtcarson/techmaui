@@ -7,6 +7,7 @@ import Research from './pages/Research';
 import Budget from './pages/Budget';
 import Login from './pages/Login';
 import SignUp from './pages/SignUp';
+import Extensions from './pages/Extensions';
 import { useState } from 'react';
 
 function App() {
@@ -136,6 +137,7 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/adblocking" element={<AdBlocking />} />
+            <Route path="/extensions" element={<Extensions />} />
             <Route path="/tools" element={<Tools />} />
             <Route path="/study" element={<Study />} />
             <Route path="/research" element={<Research />} />
