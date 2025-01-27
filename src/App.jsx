@@ -102,13 +102,16 @@ function App() {
                       >
                         About
                       </Link>
-                      <a
-                        href="mailto:nxtcarson@gmail.com"
-                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
-                        onClick={() => setIsDropdownOpen(false)}
+                      <button
+                        className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
+                        onClick={() => {
+                          navigator.clipboard.writeText('nxtcarson@gmail.com');
+                          setIsDropdownOpen(false);
+                          alert('Email copied to clipboard!');
+                        }}
                       >
                         Contact
-                      </a>
+                      </button>
                     </div>
                   )}
                 </div>
