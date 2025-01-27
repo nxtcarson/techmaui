@@ -126,7 +126,7 @@ function Tools() {
       icon: "/icons/tools/clever.png",
       category: "School",
       url: "https://clever.com",
-      requiresAdBlock: false 
+    requiresAdBlock: false 
     },
     {
       name: "Rivestream",
