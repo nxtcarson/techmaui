@@ -17,7 +17,22 @@ function Budget() {
           link: "/tools",
           linkText: "View STEAMRIP in our Tools section"
         },
-        "Use student discounts for Spotify and other streaming services",
+        {
+          tip: "Use SpotX for ad-free Spotify on Windows desktop",
+          link: "/tools",
+          linkText: "Learn about SpotX in our Tools section"
+        },
+        {
+          tip: "Install xManager for ad-free Spotify on Android",
+          link: "/tools",
+          linkText: "Get xManager from our Tools section"
+        },
+        {
+          tip: "Use uBlock Origin with Spotify Web Player to block ads",
+          link: "/adblocking",
+          linkText: "Set up uBlock Origin from our guide"
+        },
+        "Use student discounts for other streaming services",
         "Share family plans with roommates or family members",
         "Check your university's media subscriptions - many provide free access"
       ]
@@ -26,11 +41,17 @@ function Budget() {
       title: "Textbooks & Learning",
       description: "Reduce educational expenses",
       tips: [
-        "Rent textbooks instead of buying when possible",
+        {
+          tip: "Use Anna's Archive to find digital textbooks and educational materials",
+          link: "/tools",
+          linkText: "Access Anna's Archive from our Tools section"
+        },
+        "Rent physical textbooks instead of buying when needed",
         "Buy used books from campus bookstore or online marketplaces",
         "Check library reserves for required readings",
         "Split costs with classmates for shared resources",
-        "Use online resources and open educational materials"
+        "Use online resources and open educational materials",
+        "Check if older editions of textbooks are acceptable"
       ]
     },
     {

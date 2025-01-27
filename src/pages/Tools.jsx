@@ -37,6 +37,15 @@ function Tools() {
       warning: "⚠️ Only for Windows Desktop Spotify (not Microsoft Store version). Use at your own risk."
     },
     {
+      name: "xManager",
+      description: "Modified Spotify app manager for Android. Install ad-free versions with premium features.",
+      icon: "/icons/xmanager.png",
+      category: "Android",
+      url: "https://github.com/xManager-App/xManager",
+      requiresAdBlock: false,
+      warning: "⚠️ Only for Android devices. Use at your own risk."
+    },
+    {
       name: "Mobilism",
       description: "Community forum for modded Android apps and games. Trusted source for modified applications.",
       icon: "/icons/mobilism.png",
@@ -118,6 +127,24 @@ function Tools() {
       category: "School",
       url: "https://clever.com",
       requiresAdBlock: false
+    },
+    {
+      name: "Rivestream",
+      description: "Stream movies, TV shows, K-dramas, and anime. Ad-free streaming experience.",
+      icon: "/icons/rivestream.png",
+      category: "Streaming",
+      url: "https://rivestream.live",
+      requiresAdBlock: true,
+      warning: "⚠️ Use AdBlock for safe browsing. Some content may be region-restricted."
+    },
+    {
+      name: "Miruro",
+      description: "Watch anime, movies, and TV shows online. High-quality streaming service.",
+      icon: "/icons/miruro.png",
+      category: "Streaming",
+      url: "https://www.miruro.tv",
+      requiresAdBlock: true,
+      warning: "⚠️ AdBlock required for safe browsing. VPN recommended for better access."
     }
   ];
 
@@ -125,6 +152,7 @@ function Tools() {
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [hasUblock, setHasUblock] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
+  const [favorites, setFavorites] = useState([]);
 
   // Get unique categories from tools
   const categories = [
@@ -181,6 +209,63 @@ function Tools() {
     console.log('Current tools:', tools);
   }, [tools]);
 
+  // Load favorites from localStorage
+  useEffect(() => {
+    try {
+      const savedFavorites = localStorage.getItem('toolFavorites');
+      if (savedFavorites) {
+        setFavorites(JSON.parse(savedFavorites));
+      }
+    } catch (error) {
+      console.error('Error loading favorites:', error);
+    }
+  }, []);
+
+  // Save favorites to localStorage
+  useEffect(() => {
+    try {
+      localStorage.setItem('toolFavorites', JSON.stringify(favorites));
+    } catch (error) {
+      console.error('Error saving favorites:', error);
+    }
+  }, [favorites]);
+
+  const toggleFavorite = (toolName) => {
+    setFavorites(prev => {
+      const newFavorites = prev.includes(toolName)
+        ? prev.filter(name => name !== toolName)
+        : [...prev, toolName];
+      return newFavorites;
+    });
+  };
+
+  const handleShare = async (tool) => {
+    try {
+      if (navigator.share) {
+        await navigator.share({
+          title: tool.name,
+          text: tool.description,
+          url: tool.url
+        });
+      } else {
+        // Fallback to copying to clipboard
+        await navigator.clipboard.writeText(`${tool.name}: ${tool.url}`);
+        alert('Link copied to clipboard!');
+      }
+    } catch (error) {
+      console.error('Error sharing:', error);
+    }
+  };
+
+  const handleCopy = async (text) => {
+    try {
+      await navigator.clipboard.writeText(text);
+      alert('Copied to clipboard!');
+    } catch (error) {
+      console.error('Error copying:', error);
+    }
+  };
+
   return (
     <div className="w-full space-y-8">
       <div className="bg-white rounded-lg shadow-lg p-8">
@@ -191,6 +276,21 @@ function Tools() {
           <p className="text-xl text-gray-600">
             Essential websites and tools to enhance your learning experience.
           </p>
+        </div>
+
+        {/* View Toggle and Favorites Filter */}
+        <div className="flex justify-end items-center mb-4">
+          <button
+            onClick={() => setSelectedCategory(favorites.length ? 'favorites' : 'all')}
+            className={`flex items-center gap-2 px-4 py-2 rounded ${
+              selectedCategory === 'favorites' ? 'bg-purple-600 text-white' : 'bg-gray-100'
+            }`}
+          >
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+            </svg>
+            Favorites ({favorites.length})
+          </button>
         </div>
 
         {/* Search and Filter Section */}
@@ -263,7 +363,10 @@ function Tools() {
         <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
           {filteredTools.length > 0 ? (
             filteredTools.map((tool, index) => (
-              <div key={index} className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform">
+              <div
+                key={index}
+                className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform"
+              >
                 <div className="flex items-start gap-4 mb-4">
                   <img
                     src={tool.icon}
@@ -274,13 +377,49 @@ function Tools() {
                     }}
                   />
                   <div className="flex-1">
-                    <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
+                    <div className="flex items-center justify-between">
+                      <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
+                      <div className="flex gap-2">
+                        <button
+                          onClick={() => toggleFavorite(tool.name)}
+                          className={`p-1 rounded hover:bg-purple-100 transition-colors ${
+                            favorites.includes(tool.name) ? 'text-purple-600' : 'text-purple-400'
+                          }`}
+                          title={favorites.includes(tool.name) ? 'Remove from favorites' : 'Add to favorites'}
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => handleShare(tool)}
+                          className="p-1 rounded hover:bg-purple-100 transition-colors text-purple-400 hover:text-purple-600"
+                          title="Share"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
+                          </svg>
+                        </button>
+                        <button
+                          onClick={() => handleCopy(tool.url)}
+                          className="p-1 rounded hover:bg-purple-100 transition-colors text-purple-400 hover:text-purple-600"
+                          title="Copy link"
+                        >
+                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
+                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                          </svg>
+                        </button>
+                      </div>
+                    </div>
                     <span className="inline-block bg-purple-200 text-purple-800 text-sm px-2 py-1 rounded mt-1">
                       {tool.category}
                     </span>
                   </div>
                 </div>
-                <p className="text-purple-800 mb-4 flex-1">{tool.description}</p>
+                <p className="text-purple-800 mb-4 flex-1">
+                  {tool.description}
+                </p>
                 {tool.warning && (
                   <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-yellow-800 text-sm">
                     {tool.warning}
