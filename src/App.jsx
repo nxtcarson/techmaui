@@ -1,8 +1,10 @@
 import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
 import Home from './pages/Home';
 import AdBlocking from './pages/AdBlocking';
-import Extensions from './pages/Extensions';
 import Tools from './pages/Tools';
+import Study from './pages/Study';
+import Research from './pages/Research';
+import Budget from './pages/Budget';
 
 function App() {
   return (
@@ -24,16 +26,28 @@ function App() {
                     Ad Blocking
                   </Link>
                   <Link
-                    to="/extensions"
-                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
-                  >
-                    Extensions
-                  </Link>
-                  <Link
                     to="/tools"
                     className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
                   >
                     Tools
+                  </Link>
+                  <Link
+                    to="/study"
+                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
+                  >
+                    Study
+                  </Link>
+                  <Link
+                    to="/research"
+                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
+                  >
+                    Research
+                  </Link>
+                  <Link
+                    to="/budget"
+                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
+                  >
+                    Budget
                   </Link>
                 </div>
               </div>
@@ -46,8 +60,10 @@ function App() {
           <Routes>
             <Route path="/" element={<Home />} />
             <Route path="/adblocking" element={<AdBlocking />} />
-            <Route path="/extensions" element={<Extensions />} />
             <Route path="/tools" element={<Tools />} />
+            <Route path="/study" element={<Study />} />
+            <Route path="/research" element={<Research />} />
+            <Route path="/budget" element={<Budget />} />
           </Routes>
         </main>
 
