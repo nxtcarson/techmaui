@@ -1,277 +1,316 @@
 import { useState, useEffect } from 'react';
-import defaultTools from '../data/defaultTools.json';
 
 function Tools() {
-  const [links, setLinks] = useState([]);
-  const [newLink, setNewLink] = useState({ 
-    title: '', 
-    url: '', 
-    imageUrl: '', 
-    description: '',
-    requiresAdBlock: false 
-  });
-  const [error, setError] = useState('');
-  const [isFormVisible, setIsFormVisible] = useState(false);
-  const [editingId, setEditingId] = useState(null);
-
-  // Load links from localStorage or use default tools
-  useEffect(() => {
-    const savedLinks = localStorage.getItem('toolLinks');
-    if (savedLinks) {
-      setLinks(JSON.parse(savedLinks));
-    } else {
-      setLinks(defaultTools.tools);
+  const defaultTools = [
+    {
+      name: "ChatGPT",
+      description: "Advanced AI chatbot for homework help, writing assistance, and general knowledge.",
+      icon: "/icons/chatgpt.png",
+      category: "AI Assistant",
+      url: "https://chat.openai.com",
+      requiresAdBlock: false
+    },
+    {
+      name: "Microsoft Activation",
+      description: "PowerShell script for Windows/Office activation. Click to view step-by-step instructions.",
+      icon: "/icons/windows.png",
+      category: "System",
+      url: "/activation.html",
+      requiresAdBlock: false,
+      warning: "⚠️ Make sure to run PowerShell as Administrator before running the activation command"
+    },
+    {
+      name: "SponsorBlock",
+      description: "Browser extension to automatically skip sponsored segments in YouTube videos. Community-driven and time-saving.",
+      icon: "/icons/sponsorblock.png",
+      category: "Browser Extension",
+      url: "https://sponsor.ajay.app",
+      requiresAdBlock: false
+    },
+    {
+      name: "SpotX",
+      description: "Modified Spotify desktop client patcher for Windows. Removes ads and enables premium features.",
+      icon: "/icons/spotx.png",
+      category: "System",
+      url: "https://github.com/SpotX-Official/SpotX",
+      requiresAdBlock: false,
+      warning: "⚠️ Only for Windows Desktop Spotify (not Microsoft Store version). Use at your own risk."
+    },
+    {
+      name: "Mobilism",
+      description: "Community forum for modded Android apps and games. Trusted source for modified applications.",
+      icon: "/icons/mobilism.png",
+      category: "Android",
+      url: "https://forum.mobilism.org",
+      requiresAdBlock: true,
+      warning: "⚠️ Always scan downloads with antivirus and use official apps when possible"
+    },
+    {
+      name: "IHaveNoTV",
+      description: "Free documentary streaming platform with a vast collection of educational content.",
+      icon: "/icons/ihavenotv.png",
+      category: "Streaming",
+      url: "https://ihavenotv.com",
+      requiresAdBlock: true
+    },
+    {
+      name: "STEAMRIP",
+      description: "Game download portal for PC games. Direct downloads available.",
+      icon: "/icons/steamrip.png",
+      category: "Games",
+      url: "https://steamrip.com",
+      requiresAdBlock: true,
+      warning: "⚠️ Use antivirus and scan downloads. AdBlock required for safe browsing."
+    },
+    {
+      name: "FitGirl Repacks",
+      description: "Highly compressed game repacks. Trusted source for PC game downloads.",
+      icon: "/icons/fitgirl.png",
+      category: "Games",
+      url: "https://fitgirl-repacks.site",
+      requiresAdBlock: true,
+      warning: "⚠️ Only download torrents on home network. VPN recommended for popular downloads."
+    },
+    {
+      name: "Quillbot",
+      description: "AI-powered paraphrasing tool to help improve your writing.",
+      icon: "/icons/quillbot.png",
+      category: "Writing",
+      url: "https://quillbot.com",
+      requiresAdBlock: true
+    },
+    {
+      name: "Anna's Archive",
+      description: "Search engine for books, papers, comics, magazines, and more.",
+      icon: "/icons/annas.png",
+      category: "Research",
+      url: "https://annas-archive.org",
+      requiresAdBlock: true
+    },
+    {
+      name: "LibGen",
+      description: "Find and download educational books and textbooks.",
+      icon: "/icons/libgen.png",
+      category: "Books",
+      url: "https://libgen.is",
+      requiresAdBlock: true
+    },
+    {
+      name: "Symbolab",
+      description: "Advanced math problem solver with step-by-step solutions for algebra, calculus, and more.",
+      icon: "/icons/symbolab.png",
+      category: "Math",
+      url: "https://www.symbolab.com",
+      requiresAdBlock: true
+    },
+    {
+      name: "MathPapa",
+      description: "Free algebra calculator with step-by-step explanations for solving equations.",
+      icon: "/icons/mathpapa.png",
+      category: "Math",
+      url: "https://www.mathpapa.com/algebra-calculator.html",
+      requiresAdBlock: true
+    },
+    {
+      name: "Clever",
+      description: "School resource portal for accessing educational tools and applications.",
+      icon: "/icons/clever.png",
+      category: "School",
+      url: "https://clever.com",
+      requiresAdBlock: false
     }
+  ];
+
+  const [tools, setTools] = useState(defaultTools);
+  const [selectedCategory, setSelectedCategory] = useState('all');
+  const [hasUblock, setHasUblock] = useState(false);
+  const [searchQuery, setSearchQuery] = useState('');
+
+  // Get unique categories from tools
+  const categories = [
+    { id: 'all', name: 'All Tools' },
+    ...Array.from(new Set(defaultTools.map(tool => tool.category)))
+      .map(category => ({
+        id: category.toLowerCase().replace(/\s+/g, '-'),
+        name: category
+      }))
+      .sort((a, b) => a.name.localeCompare(b.name))
+  ];
+
+  // Filter tools based on category and search query
+  const filteredTools = tools
+    .filter(tool => 
+      (selectedCategory === 'all' || tool.category.toLowerCase().replace(/\s+/g, '-') === selectedCategory) &&
+      (searchQuery === '' || 
+        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        tool.category.toLowerCase().includes(searchQuery.toLowerCase()))
+    );
+
+  // Save to localStorage whenever tools change
+  useEffect(() => {
+    try {
+      localStorage.setItem('toolLinks', JSON.stringify(tools));
+    } catch (error) {
+      console.error('Error saving tools to localStorage:', error);
+    }
+  }, [tools]);
+
+  // Check for uBlock Origin
+  useEffect(() => {
+    const checkUblock = () => {
+      try {
+        const test = document.createElement('div');
+        test.innerHTML = '&nbsp;';
+        test.className = 'adsbox';
+        document.body.appendChild(test);
+        const isBlocked = test.offsetHeight === 0;
+        document.body.removeChild(test);
+        setHasUblock(isBlocked);
+      } catch (error) {
+        console.error('Error checking for uBlock:', error);
+        setHasUblock(false);
+      }
+    };
+    
+    checkUblock();
   }, []);
 
-  // Save links to localStorage whenever they change
+  // Debug log
   useEffect(() => {
-    localStorage.setItem('toolLinks', JSON.stringify(links));
-  }, [links]);
-
-  // Function to save current tools to defaultTools.json
-  const saveToDefault = () => {
-    try {
-      const toolsToSave = JSON.stringify({ tools: links }, null, 2);
-      // Copy this to clipboard so you can update the defaultTools.json file
-      navigator.clipboard.writeText(toolsToSave);
-      alert('Tools data copied to clipboard! Paste this into src/data/defaultTools.json to save as default tools.');
-    } catch (err) {
-      alert('Error copying tools data: ' + err.message);
-    }
-  };
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    
-    try {
-      const url = new URL(newLink.url); // Validate URL format
-      if (!newLink.title.trim()) {
-        setError('Please enter a title for the link');
-        return;
-      }
-
-      // Validate image URL if provided
-      if (newLink.imageUrl && !newLink.imageUrl.match(/^https?:\/\/.+/)) {
-        setError('Please enter a valid image URL (starting with http:// or https://)');
-        return;
-      }
-
-      if (editingId) {
-        setLinks(links.map(link => 
-          link.id === editingId ? { ...newLink, id: editingId } : link
-        ));
-        setEditingId(null);
-      } else {
-        setLinks([...links, { ...newLink, id: Date.now() }]);
-      }
-
-      setNewLink({ title: '', url: '', imageUrl: '', description: '', requiresAdBlock: false });
-      setError('');
-      setIsFormVisible(false);
-    } catch {
-      setError('Please enter a valid URL (including http:// or https://)');
-    }
-  };
-
-  const handleEdit = (link) => {
-    setNewLink({ ...link });
-    setEditingId(link.id);
-    setIsFormVisible(true);
-    window.scrollTo({ top: 0, behavior: 'smooth' });
-  };
-
-  const handleDelete = (id) => {
-    setLinks(links.filter(link => link.id !== id));
-  };
-
-  const handleCancel = () => {
-    setNewLink({ title: '', url: '', imageUrl: '', description: '', requiresAdBlock: false });
-    setEditingId(null);
-    setError('');
-    setIsFormVisible(false);
-  };
+    console.log('Current tools:', tools);
+  }, [tools]);
 
   return (
-    <div className="w-full">
+    <div className="w-full space-y-8">
       <div className="bg-white rounded-lg shadow-lg p-8">
-        <div className="flex justify-between items-center mb-8">
-          <div>
-            <h1 className="text-4xl font-bold text-gray-900 mb-2">Useful Tools</h1>
-            <p className="text-xl text-gray-600">Add and manage helpful tools and resources.</p>
+        <div className="mb-8">
+          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 hover:from-gray-600 hover:to-gray-900 transition-all duration-500 mb-4">
+            Useful Tools
+          </h1>
+          <p className="text-xl text-gray-600">
+            Essential websites and tools to enhance your learning experience.
+          </p>
+        </div>
+
+        {/* Search and Filter Section */}
+        <div className="space-y-4 mb-8">
+          {/* Search Bar */}
+          <div className="relative">
+            <input
+              type="text"
+              placeholder="Search tools..."
+              value={searchQuery}
+              onChange={(e) => setSearchQuery(e.target.value)}
+              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+            />
+            <svg
+              className="absolute right-3 top-2.5 h-5 w-5 text-gray-400"
+              xmlns="http://www.w3.org/2000/svg"
+              viewBox="0 0 20 20"
+              fill="currentColor"
+            >
+              <path
+                fillRule="evenodd"
+                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                clipRule="evenodd"
+              />
+            </svg>
           </div>
-          <div className="flex space-x-4">
-            <button
-              onClick={saveToDefault}
-              className="bg-green-600 text-white p-3 rounded-full hover:bg-green-700 transition-colors shadow-lg"
-              title="Save current tools as default"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M8 7H5a2 2 0 00-2 2v9a2 2 0 002 2h14a2 2 0 002-2V9a2 2 0 00-2-2h-3m-1 4l-3 3m0 0l-3-3m3 3V4" />
-              </svg>
-            </button>
-            <button
-              onClick={() => setIsFormVisible(!isFormVisible)}
-              className="bg-blue-600 text-white p-3 rounded-full hover:bg-blue-700 transition-colors shadow-lg"
-            >
-              <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
-                {isFormVisible ? (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M6 18L18 6M6 6l12 12" />
-                ) : (
-                  <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 4v16m8-8H4" />
-                )}
-              </svg>
-            </button>
+
+          {/* Category Filter */}
+          <div className="flex flex-wrap gap-2">
+            {categories.map(category => (
+              <button
+                key={category.id}
+                onClick={() => setSelectedCategory(category.id)}
+                className={`px-4 py-2 rounded-lg transition duration-200 ${
+                  selectedCategory === category.id
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-gray-100 text-gray-700 hover:bg-purple-100'
+                }`}
+              >
+                {category.name}
+              </button>
+            ))}
           </div>
         </div>
 
-        {/* Add/Edit form */}
-        {isFormVisible && (
-          <form onSubmit={handleSubmit} className="mb-8 bg-blue-50 p-6 rounded-lg border border-blue-100">
-            <h2 className="text-2xl font-semibold text-blue-900 mb-4">
-              {editingId ? 'Edit Tool' : 'Add New Tool'}
-            </h2>
-            <div className="space-y-4">
-              <div>
-                <label htmlFor="title" className="block text-blue-800 mb-1">Title *</label>
-                <input
-                  type="text"
-                  id="title"
-                  value={newLink.title}
-                  onChange={(e) => setNewLink({ ...newLink, title: e.target.value })}
-                  className="w-full p-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="Enter tool name"
-                  required
-                />
+        {!hasUblock && (
+          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
+            <div className="flex">
+              <div className="flex-shrink-0">
+                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+                </svg>
               </div>
-              <div>
-                <label htmlFor="url" className="block text-blue-800 mb-1">URL *</label>
-                <input
-                  type="text"
-                  id="url"
-                  value={newLink.url}
-                  onChange={(e) => setNewLink({ ...newLink, url: e.target.value })}
-                  className="w-full p-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="https://example.com"
-                  required
-                />
-              </div>
-              <div>
-                <label htmlFor="imageUrl" className="block text-blue-800 mb-1">Image URL (Optional)</label>
-                <input
-                  type="text"
-                  id="imageUrl"
-                  value={newLink.imageUrl}
-                  onChange={(e) => setNewLink({ ...newLink, imageUrl: e.target.value })}
-                  className="w-full p-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400"
-                  placeholder="https://example.com/image.jpg"
-                />
-              </div>
-              <div>
-                <label htmlFor="description" className="block text-blue-800 mb-1">Description (Optional)</label>
-                <textarea
-                  id="description"
-                  value={newLink.description}
-                  onChange={(e) => setNewLink({ ...newLink, description: e.target.value })}
-                  className="w-full p-2 border border-blue-200 rounded focus:outline-none focus:ring-2 focus:ring-blue-400 min-h-[100px]"
-                  placeholder="Enter a description of the tool..."
-                />
-              </div>
-              <div className="flex items-center space-x-2">
-                <input
-                  type="checkbox"
-                  id="requiresAdBlock"
-                  checked={newLink.requiresAdBlock}
-                  onChange={(e) => setNewLink({ ...newLink, requiresAdBlock: e.target.checked })}
-                  className="w-4 h-4 text-blue-600 rounded border-blue-300 focus:ring-blue-500"
-                />
-                <label htmlFor="requiresAdBlock" className="text-blue-800">
-                  Requires Ad Blocking for safe access
-                </label>
-              </div>
-              {error && <p className="text-red-600">{error}</p>}
-              <div className="flex space-x-4">
-                <button
-                  type="submit"
-                  className="bg-blue-600 text-white px-6 py-2 rounded hover:bg-blue-700 transition-colors"
-                >
-                  {editingId ? 'Save Changes' : 'Add Tool'}
-                </button>
-                <button
-                  type="button"
-                  onClick={handleCancel}
-                  className="bg-gray-500 text-white px-6 py-2 rounded hover:bg-gray-600 transition-colors"
-                >
-                  Cancel
-                </button>
-              </div>
-            </div>
-          </form>
-        )}
-
-        {/* Links grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-          {links.map(link => (
-            <div key={link.id} className="bg-white rounded-lg shadow-md overflow-hidden border border-gray-200 hover:shadow-lg transition-shadow">
-              {/* Website preview */}
-              <div className="aspect-video w-full bg-gray-100 relative">
-                <img
-                  src={link.imageUrl || `https://image.thum.io/get/width/600/crop/800/${link.url}`}
-                  alt={`Preview of ${link.title}`}
-                  className="w-full h-full object-cover"
-                  onError={(e) => {
-                    e.target.src = 'https://via.placeholder.com/600x400?text=Preview+Not+Available';
-                  }}
-                />
-                {link.requiresAdBlock && (
-                  <div className="absolute top-2 right-2 bg-yellow-500 rounded-full p-2 shadow-lg" title="Ad Blocking Recommended">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 text-white" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M2.166 4.999A11.954 11.954 0 0010 1.944 11.954 11.954 0 0017.834 5c.11.65.166 1.32.166 2.001 0 5.225-3.34 9.67-8 11.317C5.34 16.67 2 12.225 2 7c0-.682.057-1.35.166-2.001zm11.541 3.708a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clipRule="evenodd" />
-                    </svg>
-                  </div>
-                )}
-              </div>
-              
-              {/* Link details */}
-              <div className="p-4">
-                <h3 className="text-lg font-semibold text-gray-900 mb-2">{link.title}</h3>
-                {link.description && (
-                  <p className="text-gray-600 mb-4 line-clamp-3">{link.description}</p>
-                )}
-                <div className="flex items-center justify-between">
-                  <div className="flex space-x-4">
-                    <a
-                      href={link.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-800 transition-colors"
-                    >
-                      Visit Site
-                    </a>
-                    <button
-                      onClick={() => handleEdit(link)}
-                      className="text-green-600 hover:text-green-800 transition-colors"
-                    >
-                      Edit
-                    </button>
-                  </div>
-                  <button
-                    onClick={() => handleDelete(link.id)}
-                    className="text-red-600 hover:text-red-800 transition-colors"
+              <div className="ml-3">
+                <h3 className="text-sm font-medium text-red-800">Ad Blocker Required</h3>
+                <div className="mt-2 text-sm text-red-700">
+                  <p>For your safety and better experience, please install uBlock Origin before using these tools. Many of these sites contain intrusive ads and potential security risks without an ad blocker.</p>
+                  <a
+                    href="/adblocking"
+                    className="inline-flex items-center mt-3 text-red-800 hover:text-red-900 font-medium"
                   >
-                    Delete
-                  </button>
+                    Install uBlock Origin →
+                  </a>
                 </div>
               </div>
             </div>
-          ))}
-        </div>
-
-        {links.length === 0 && (
-          <div className="text-center text-gray-500 py-8">
-            No tools added yet. Click the + button to add your first tool!
           </div>
         )}
+        
+        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+          {filteredTools.length > 0 ? (
+            filteredTools.map((tool, index) => (
+              <div key={index} className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform">
+                <div className="flex items-start gap-4 mb-4">
+                  <img
+                    src={tool.icon}
+                    alt={`${tool.name} icon`}
+                    className="w-12 h-12 rounded-lg"
+                    onError={(e) => {
+                      e.target.src = 'https://via.placeholder.com/48?text=' + tool.name[0];
+                    }}
+                  />
+                  <div className="flex-1">
+                    <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
+                    <span className="inline-block bg-purple-200 text-purple-800 text-sm px-2 py-1 rounded mt-1">
+                      {tool.category}
+                    </span>
+                  </div>
+                </div>
+                <p className="text-purple-800 mb-4 flex-1">{tool.description}</p>
+                {tool.warning && (
+                  <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-yellow-800 text-sm">
+                    {tool.warning}
+                  </div>
+                )}
+                {tool.requiresAdBlock && !hasUblock && (
+                  <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
+                    ⚠️ This site requires uBlock Origin for safe access
+                  </div>
+                )}
+                <a
+                  href={tool.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
+                >
+                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                  </svg>
+                  Open {tool.name}
+                </a>
+              </div>
+            ))
+          ) : (
+            <div className="col-span-2 text-center text-gray-500 py-8">
+              No tools found matching your search criteria.
+            </div>
+          )}
+        </div>
       </div>
     </div>
   );
