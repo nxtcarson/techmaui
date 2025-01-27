@@ -42,7 +42,7 @@ Before you begin, ensure you have the following installed:
 - Node.js (v14 or higher)
 - npm (v6 or higher)
 
-## 🔧 Installation
+## 🔧 Installation & Development
 
 ```bash
 # Clone the repository
@@ -59,57 +59,6 @@ npm run dev
 
 # Open in browser
 http://localhost:5173
-```
-
-## 🚀 Deployment
-
-### Local Build
-```bash
-# Create production build
-npm run build
-
-# Preview production build locally
-npm run preview
-```
-
-### Deploy to GitHub Pages
-```bash
-# Update vite.config.js base URL
-# Add this to your vite.config.js:
-# export default defineConfig({
-#   base: '/techmaui/',
-#   // ... other config
-# })
-
-# Build the project
-npm run build
-
-# Deploy to GitHub Pages
-npm run deploy
-```
-
-### Deploy to Vercel
-```bash
-# Install Vercel CLI
-npm i -g vercel
-
-# Deploy to Vercel
-vercel
-
-# Deploy to Production
-vercel --prod
-```
-
-### Deploy to Netlify
-```bash
-# Install Netlify CLI
-npm install netlify-cli -g
-
-# Deploy to Netlify
-netlify deploy
-
-# Deploy to Production
-netlify deploy --prod
 ```
 
 ## 🤝 Contributing
