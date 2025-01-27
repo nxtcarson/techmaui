@@ -44,54 +44,73 @@ Before you begin, ensure you have the following installed:
 
 ## 🔧 Installation
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/nxtcarson/techmaui.git
-   ```
+```bash
+# Clone the repository
+git clone https://github.com/nxtcarson/techmaui.git
 
-2. Navigate to the project directory:
-   ```bash
-   cd techmaui
-   ```
+# Navigate to project directory
+cd techmaui
 
-3. Install dependencies:
-   ```bash
-   npm install
-   ```
+# Install dependencies
+npm install
 
-4. Start the development server:
-   ```bash
-   npm run dev
-   ```
+# Start development server
+npm run dev
 
-5. Open your browser and visit:
-   ```
-   http://localhost:5173
-   ```
+# Open in browser
+http://localhost:5173
+```
 
 ## 🚀 Deployment
 
-This project can be deployed using various platforms. Here are the steps for deploying to GitHub Pages:
+### Local Build
+```bash
+# Create production build
+npm run build
 
-1. Update the `vite.config.js` file:
-   ```javascript
-   export default defineConfig({
-     base: '/techmaui/',
-     // ... other config options
-   })
-   ```
+# Preview production build locally
+npm run preview
+```
 
-2. Build the project:
-   ```bash
-   npm run build
-   ```
+### Deploy to GitHub Pages
+```bash
+# Update vite.config.js base URL
+# Add this to your vite.config.js:
+# export default defineConfig({
+#   base: '/techmaui/',
+#   // ... other config
+# })
 
-3. Deploy to GitHub Pages:
-   ```bash
-   npm run deploy
-   ```
+# Build the project
+npm run build
 
-Alternatively, you can deploy to other platforms like Vercel or Netlify for automatic deployments.
+# Deploy to GitHub Pages
+npm run deploy
+```
+
+### Deploy to Vercel
+```bash
+# Install Vercel CLI
+npm i -g vercel
+
+# Deploy to Vercel
+vercel
+
+# Deploy to Production
+vercel --prod
+```
+
+### Deploy to Netlify
+```bash
+# Install Netlify CLI
+npm install netlify-cli -g
+
+# Deploy to Netlify
+netlify deploy
+
+# Deploy to Production
+netlify deploy --prod
+```
 
 ## 🤝 Contributing
 
