@@ -5,8 +5,15 @@ import Tools from './pages/Tools';
 import Study from './pages/Study';
 import Research from './pages/Research';
 import Budget from './pages/Budget';
+import { useState } from 'react';
 
 function App() {
+  const [isDropdownOpen, setIsDropdownOpen] = useState(false);
+
+  const toggleDropdown = () => {
+    setIsDropdownOpen(!isDropdownOpen);
+  };
+
   return (
     <Router>
       <div className="min-h-screen bg-gray-100">
@@ -49,6 +56,59 @@ function App() {
                   >
                     Budget
                   </Link>
+                </div>
+              </div>
+              <div className="flex items-center space-x-4">
+                <Link to="/adblocking" className="text-gray-600 hover:text-purple-600">Ad Blocking</Link>
+                <Link to="/extensions" className="text-gray-600 hover:text-purple-600">Extensions</Link>
+                <Link to="/tools" className="text-gray-600 hover:text-purple-600">Tools</Link>
+                <Link to="/study" className="text-gray-600 hover:text-purple-600">Study</Link>
+                <Link to="/research" className="text-gray-600 hover:text-purple-600">Research</Link>
+                <Link to="/budget" className="text-gray-600 hover:text-purple-600">Budget</Link>
+                
+                {/* Dropdown Menu */}
+                <div className="relative">
+                  <button
+                    onClick={toggleDropdown}
+                    className="flex items-center text-gray-600 hover:text-purple-600 focus:outline-none"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                      <path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 5v.01M12 12v.01M12 19v.01M12 6a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2zm0 7a1 1 0 110-2 1 1 0 010 2z" />
+                    </svg>
+                  </button>
+                  
+                  {isDropdownOpen && (
+                    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 z-50">
+                      <Link
+                        to="/signup"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Sign Up
+                      </Link>
+                      <Link
+                        to="/login"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Login
+                      </Link>
+                      <Link
+                        to="/about"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        About
+                      </Link>
+                      <Link
+                        to="/contact"
+                        className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50"
+                        onClick={() => setIsDropdownOpen(false)}
+                      >
+                        Contact
+                      </Link>
+                    </div>
+                  )}
                 </div>
               </div>
             </div>
