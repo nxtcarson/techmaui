@@ -5,6 +5,8 @@ import Tools from './pages/Tools';
 import Study from './pages/Study';
 import Research from './pages/Research';
 import Budget from './pages/Budget';
+import Login from './pages/Login';
+import SignUp from './pages/SignUp';
 import { useState } from 'react';
 
 function App() {
@@ -33,6 +35,12 @@ function App() {
                     Ad Blocking
                   </Link>
                   <Link
+                    to="/extensions"
+                    className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
+                  >
+                    Extensions
+                  </Link>
+                  <Link
                     to="/tools"
                     className="inline-flex items-center px-1 pt-1 text-sm font-medium text-gray-900 hover:text-purple-600"
                   >
@@ -58,15 +66,9 @@ function App() {
                   </Link>
                 </div>
               </div>
-              <div className="flex items-center space-x-4">
-                <Link to="/adblocking" className="text-gray-600 hover:text-purple-600">Ad Blocking</Link>
-                <Link to="/extensions" className="text-gray-600 hover:text-purple-600">Extensions</Link>
-                <Link to="/tools" className="text-gray-600 hover:text-purple-600">Tools</Link>
-                <Link to="/study" className="text-gray-600 hover:text-purple-600">Study</Link>
-                <Link to="/research" className="text-gray-600 hover:text-purple-600">Research</Link>
-                <Link to="/budget" className="text-gray-600 hover:text-purple-600">Budget</Link>
-                
-                {/* Dropdown Menu */}
+              
+              {/* Profile Dropdown */}
+              <div className="flex items-center">
                 <div className="relative">
                   <button
                     onClick={toggleDropdown}
@@ -100,13 +102,13 @@ function App() {
                       >
                         About
                       </Link>
-                      <Link
-                        to="/contact"
+                      <a
+                        href="mailto:nxtcarson@gmail.com"
                         className="block px-4 py-2 text-sm text-gray-700 hover:bg-purple-50 hover:text-purple-600 transition-colors duration-200"
                         onClick={() => setIsDropdownOpen(false)}
                       >
                         Contact
-                      </Link>
+                      </a>
                     </div>
                   )}
                 </div>
@@ -124,6 +126,8 @@ function App() {
             <Route path="/study" element={<Study />} />
             <Route path="/research" element={<Research />} />
             <Route path="/budget" element={<Budget />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/signup" element={<SignUp />} />
           </Routes>
         </main>
 
