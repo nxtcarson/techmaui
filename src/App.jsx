@@ -76,20 +76,8 @@ function App() {
                 </div>
               </div>
               
-              {/* Profile and Theme Toggle */}
-              <div className="flex items-center space-x-4">
-                <button
-                  className={`p-1.5 rounded-full ${
-                    'bg-purple-50 text-purple-500 hover:bg-purple-100'
-                  } transition-colors duration-200`}
-                  title="Switch to dark mode"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-6 w-6" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M17.293 13.293A8 8 0 016.707 2.707a8.001 8.001 0 1010.586 10.586z" />
-                  </svg>
-                </button>
-                
-                {/* Profile Dropdown */}
+              {/* Profile Dropdown */}
+              <div className="flex items-center">
                 <div className="relative">
                   <button
                     onClick={toggleDropdown}
