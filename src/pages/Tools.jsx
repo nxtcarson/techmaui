@@ -5,12 +5,12 @@ function Tools() {
   const defaultTools = [
     {
       name: "Request Tools",
-      description: "Need specific tools not listed here? Email me for personalized assistance with Windows, Office, games, or any other tools you're looking for. I'm here to help!",
+      description: "Need help with Windows/Office activation, game tools, or any other software? Email me for personalized assistance - I'm here to help you with all your tech needs!",
       icon: "/icons/tools/request.png",
       category: "Support",
       url: "nxtcarson@gmail.com",
       requiresAdBlock: false,
-      warning: "✨ Click the button below to copy my email address to your clipboard!",
+      warning: "✨ Click the button below to copy my email address to your clipboard! I can help with Windows/Office activation, game tools, and more.",
       lastVerified: new Date().toISOString().split('T')[0],
       isEmail: true
     },
@@ -24,27 +24,11 @@ function Tools() {
       lastVerified: "2024-01-27"
     },
     {
-      name: "Microsoft Activation Support",
-      description: "For Windows/Office activation assistance, please email nxtcarson@gmail.com",
-      icon: "/icons/tools/support.png",
-      category: "Support",
-      url: "mailto:nxtcarson@gmail.com",
-      requiresAdBlock: false
-    },
-    {
       name: "SponsorBlock",
       description: "Skip sponsored segments in YouTube videos automatically.",
       icon: "/icons/tools/sponsorblock.png",
       category: "Browser Extension",
       url: "https://sponsor.ajay.app",
-      requiresAdBlock: false
-    },
-    {
-      name: "Game Tools Support",
-      description: "For game-related tools and assistance, please email nxtcarson@gmail.com",
-      icon: "/icons/tools/support.png",
-      category: "Support",
-      url: "mailto:nxtcarson@gmail.com",
       requiresAdBlock: false
     },
     {
