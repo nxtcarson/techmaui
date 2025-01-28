@@ -27,7 +27,12 @@ function App() {
           <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
             <div className="flex justify-between h-16">
               <div className="flex">
-                <Link to="/" className="flex items-center">
+                <Link to="/" className="flex items-center gap-3">
+                  <img 
+                    src="/icons/brand/logo.png" 
+                    alt="TechMaui Logo" 
+                    className="h-10 w-10"
+                  />
                   <span className="text-xl font-bold text-purple-600">TechMaui</span>
                 </Link>
                 <div className="hidden sm:ml-6 sm:flex sm:space-x-8">
