@@ -65,22 +65,12 @@ function Tools() {
       requiresAdBlock: true
     },
     {
-      name: "STEAMRIP",
-      description: "Download portal for PC games. Clean files, no mining.",
-      icon: "/icons/tools/steamrip.png",
-      category: "Games",
-      url: "https://steamrip.com",
-      requiresAdBlock: true,
-      warning: "⚠️ Use antivirus and scan downloads. AdBlock required."
-    },
-    {
-      name: "FitGirl Repacks",
-      description: "Highly compressed game repacks. Trusted and reliable.",
-      icon: "/icons/tools/fitgirl.png",
-      category: "Games",
-      url: "https://fitgirl-repacks.site",
-      requiresAdBlock: true,
-      warning: "⚠️ Use VPN when downloading torrents. Not on home/school network."
+      name: "Game Tools Support",
+      description: "For game-related tools and assistance, please email nxtcarson@gmail.com",
+      icon: "/icons/tools/support.png",
+      category: "Support",
+      url: "mailto:nxtcarson@gmail.com",
+      requiresAdBlock: false
     },
     {
       name: "QuillBot",
@@ -113,40 +103,6 @@ function Tools() {
       category: "Math",
       url: "https://www.symbolab.com",
       requiresAdBlock: false
-    },
-    {
-      name: "MathPapa",
-      description: "Algebra calculator and solver with detailed steps.",
-      icon: "/icons/tools/mathpapa.png",
-      category: "Math",
-      url: "https://www.mathpapa.com",
-      requiresAdBlock: false
-    },
-    {
-      name: "Clever",
-      description: "School resource portal for accessing educational tools and applications.",
-      icon: "/icons/tools/clever.png",
-      category: "School",
-      url: "https://clever.com",
-    requiresAdBlock: false 
-    },
-    {
-      name: "Rivestream",
-      description: "Stream movies, TV shows, K-dramas, and anime. Ad-free streaming experience.",
-      icon: "/icons/tools/rivestream.png",
-      category: "Streaming",
-      url: "https://rivestream.live",
-      requiresAdBlock: true,
-      warning: "⚠️ Use AdBlock for safe browsing. Some content may be region-restricted."
-    },
-    {
-      name: "Miruro",
-      description: "Watch anime, movies, and TV shows online. High-quality streaming service.",
-      icon: "/icons/tools/miruro.png",
-      category: "Streaming",
-      url: "https://www.miruro.tv",
-      requiresAdBlock: true,
-      warning: "⚠️ AdBlock required for safe browsing. VPN recommended for better access."
     }
   ];
 
