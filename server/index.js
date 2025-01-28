@@ -15,8 +15,22 @@ const __dirname = dirname(__filename);
 const app = express();
 const PORT = process.env.PORT || 5000;
 
+// CORS configuration
+const corsOptions = {
+  origin: process.env.NODE_ENV === 'production' 
+    ? [
+        'https://techmaui.netlify.app', // Add your Netlify domain
+        'http://localhost:3000',        // For local development
+        'http://localhost:5000'         // For local development
+      ]
+    : '*',
+  methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
+  allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
+  credentials: true
+};
+
 // Middleware
-app.use(cors());
+app.use(cors(corsOptions));
 app.use(express.json());
 
 // Serve static files from the React app
