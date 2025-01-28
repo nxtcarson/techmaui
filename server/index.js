@@ -19,14 +19,15 @@ const PORT = process.env.PORT || 5000;
 const corsOptions = {
   origin: process.env.NODE_ENV === 'production' 
     ? [
-        'https://techmaui.netlify.app', // Add your Netlify domain
-        'http://localhost:3000',        // For local development
-        'http://localhost:5000'         // For local development
+        process.env.NETLIFY_URL || 'https://techmaui.netlify.app',
+        'http://localhost:3000',
+        'http://localhost:5000'
       ]
     : '*',
   methods: ['GET', 'POST', 'PUT', 'DELETE', 'OPTIONS'],
   allowedHeaders: ['Content-Type', 'Authorization', 'x-auth-token'],
-  credentials: true
+  credentials: true,
+  optionsSuccessStatus: 200
 };
 
 // Middleware
