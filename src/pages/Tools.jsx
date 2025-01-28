@@ -8,7 +8,8 @@ function Tools() {
       icon: "/icons/tools/chatgpt.png",
       category: "AI",
       url: "https://chat.openai.com",
-      requiresAdBlock: false
+      requiresAdBlock: false,
+      lastVerified: "2024-01-27"
     },
     {
       name: "Microsoft Activation",
@@ -184,17 +185,35 @@ function Tools() {
     }
   }, [tools]);
 
-  // Check for uBlock Origin
+  // Check for uBlock Origin - improved detection
   useEffect(() => {
-    const checkUblock = () => {
+    const checkUblock = async () => {
       try {
-        const test = document.createElement('div');
-        test.innerHTML = '&nbsp;';
-        test.className = 'adsbox';
-        document.body.appendChild(test);
-        const isBlocked = test.offsetHeight === 0;
-        document.body.removeChild(test);
-        setHasUblock(isBlocked);
+        // Create multiple test elements with common ad class names
+        const testElements = [
+          { className: 'adsbox', innerHTML: '&nbsp;' },
+          { className: 'adsbygoogle', innerHTML: '&nbsp;' },
+          { className: 'ad-placeholder', innerHTML: '&nbsp;' }
+        ];
+
+        const results = await Promise.all(testElements.map(({ className, innerHTML }) => {
+          return new Promise(resolve => {
+            const test = document.createElement('div');
+            test.className = className;
+            test.innerHTML = innerHTML;
+            document.body.appendChild(test);
+            
+            // Use requestAnimationFrame to ensure the element is rendered
+            requestAnimationFrame(() => {
+              const isBlocked = test.offsetHeight === 0;
+              document.body.removeChild(test);
+              resolve(isBlocked);
+            });
+          });
+        }));
+
+        // If any test detects an adblocker, consider it as blocked
+        setHasUblock(results.some(result => result));
       } catch (error) {
         console.error('Error checking for uBlock:', error);
         setHasUblock(false);
@@ -239,24 +258,6 @@ function Tools() {
     });
   };
 
-  const handleShare = async (tool) => {
-    try {
-      if (navigator.share) {
-        await navigator.share({
-          title: tool.name,
-          text: tool.description,
-          url: tool.url
-        });
-      } else {
-        // Fallback to copying to clipboard
-        await navigator.clipboard.writeText(`${tool.name}: ${tool.url}`);
-        alert('Link copied to clipboard!');
-      }
-    } catch (error) {
-      console.error('Error sharing:', error);
-    }
-  };
-
   const handleCopy = async (text) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -267,188 +268,194 @@ function Tools() {
   };
 
   return (
-    <div className="w-full space-y-8">
-      <div className="bg-white rounded-lg shadow-lg p-8">
-        <div className="mb-8">
-          <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-gray-900 to-gray-600 hover:from-gray-600 hover:to-gray-900 transition-all duration-500 mb-4">
-            Useful Tools
-          </h1>
-          <p className="text-xl text-gray-600">
-            Essential websites and tools to enhance your learning experience.
-          </p>
+    <div className="min-h-[calc(100vh-16rem)] relative bg-gradient-to-br from-purple-50 via-white to-purple-50 overflow-hidden">
+      {/* Decorative Elements */}
+      <div className="absolute inset-0 z-0">
+        <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
+        <div className="absolute top-0 right-0 w-64 h-64 bg-purple-200 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000"></div>
+        <div className="absolute -bottom-8 left-20 w-64 h-64 bg-purple-300 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000"></div>
+      </div>
+
+      <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
+        <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-purple-100">
+          {/* Header */}
+          <div className="text-center mb-8">
+            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-400">
+              Useful Tools
+            </h1>
+            <p className="mt-2 text-gray-600">
+              A curated collection of tools to enhance your experience
+            </p>
           </div>
 
-        {/* View Toggle and Favorites Filter */}
-        <div className="flex justify-end items-center mb-4">
-            <button
-            onClick={() => setSelectedCategory(favorites.length ? 'favorites' : 'all')}
-            className={`flex items-center gap-2 px-4 py-2 rounded ${
-              selectedCategory === 'favorites' ? 'bg-purple-600 text-white' : 'bg-gray-100'
-            }`}
-          >
-            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-              <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-              </svg>
-            Favorites ({favorites.length})
-            </button>
-        </div>
-
-        {/* Search and Filter Section */}
-        <div className="space-y-4 mb-8">
-          {/* Search Bar */}
-          <div className="relative">
-            <input
-              type="text"
-              placeholder="Search tools..."
-              value={searchQuery}
-              onChange={(e) => setSearchQuery(e.target.value)}
-              className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
-            />
-            <svg
-              className="absolute right-3 top-2.5 h-5 w-5 text-gray-400"
-              xmlns="http://www.w3.org/2000/svg"
-              viewBox="0 0 20 20"
-              fill="currentColor"
-            >
-              <path
-                fillRule="evenodd"
-                d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
-                clipRule="evenodd"
-              />
-              </svg>
-          </div>
-
-          {/* Category Filter */}
-          <div className="flex flex-wrap gap-2">
-            {categories.map(category => (
-              <button
-                key={category.id}
-                onClick={() => setSelectedCategory(category.id)}
-                className={`px-4 py-2 rounded-lg transition duration-200 ${
-                  selectedCategory === category.id
-                    ? 'bg-purple-600 text-white'
-                    : 'bg-gray-100 text-gray-700 hover:bg-purple-100'
-                }`}
-              >
-                {category.name}
-            </button>
-            ))}
-          </div>
-        </div>
-
-        {!hasUblock && (
-          <div className="bg-red-50 border-l-4 border-red-500 p-4 mb-8">
-            <div className="flex">
-              <div className="flex-shrink-0">
-                <svg className="h-5 w-5 text-red-400" viewBox="0 0 20 20" fill="currentColor">
-                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd" />
+          {/* AdBlock Warning */}
+          {!hasUblock && (
+            <div className="mb-6 p-4 bg-red-50 border border-red-200 rounded-lg">
+              <div className="flex items-center text-red-800">
+                <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                  <path fillRule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clipRule="evenodd"/>
                 </svg>
+                <span>For your safety, please install an ad blocker before using these tools. We recommend <a href="https://ublockorigin.com/" target="_blank" rel="noopener noreferrer" className="underline">uBlock Origin</a>.</span>
               </div>
-              <div className="ml-3">
-                <h3 className="text-sm font-medium text-red-800">Ad Blocker Required</h3>
-                <div className="mt-2 text-sm text-red-700">
-                  <p>For your safety and better experience, please install uBlock Origin before using these tools. Many of these sites contain intrusive ads and potential security risks without an ad blocker.</p>
-                  <a
-                    href="/adblocking"
-                    className="inline-flex items-center mt-3 text-red-800 hover:text-red-900 font-medium"
-                  >
-                    Install uBlock Origin →
-                  </a>
-              </div>
-              </div>
-            </div>
-          </div>
-        )}
-        
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
-          {filteredTools.length > 0 ? (
-            filteredTools.map((tool, index) => (
-              <div
-                key={index}
-                className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform"
-              >
-                <div className="flex items-start gap-4 mb-4">
-                  <img
-                    src={tool.icon}
-                    alt={`${tool.name} icon`}
-                    className="w-12 h-12 rounded-lg"
-                  onError={(e) => {
-                      e.target.src = 'https://via.placeholder.com/48?text=' + tool.name[0];
-                    }}
-                  />
-                  <div className="flex-1">
-                    <div className="flex items-center justify-between">
-                      <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
-                      <div className="flex gap-2">
-                        <button
-                          onClick={() => toggleFavorite(tool.name)}
-                          className={`p-1 rounded hover:bg-purple-100 transition-colors ${
-                            favorites.includes(tool.name) ? 'text-purple-600' : 'text-purple-400'
-                          }`}
-                          title={favorites.includes(tool.name) ? 'Remove from favorites' : 'Add to favorites'}
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleShare(tool)}
-                          className="p-1 rounded hover:bg-purple-100 transition-colors text-purple-400 hover:text-purple-600"
-                          title="Share"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M15 8a3 3 0 10-2.977-2.63l-4.94 2.47a3 3 0 100 4.319l4.94 2.47a3 3 0 10.895-1.789l-4.94-2.47a3.027 3.027 0 000-.74l4.94-2.47C13.456 7.68 14.19 8 15 8z" />
-                          </svg>
-                        </button>
-                        <button
-                          onClick={() => handleCopy(tool.url)}
-                          className="p-1 rounded hover:bg-purple-100 transition-colors text-purple-400 hover:text-purple-600"
-                          title="Copy link"
-                        >
-                          <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                            <path d="M8 3a1 1 0 011-1h2a1 1 0 110 2H9a1 1 0 01-1-1z" />
-                            <path d="M6 3a2 2 0 00-2 2v11a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                    </svg>
-                        </button>
-                      </div>
-                    </div>
-                    <span className="inline-block bg-purple-200 text-purple-800 text-sm px-2 py-1 rounded mt-1">
-                      {tool.category}
-                    </span>
-                  </div>
-                </div>
-                <p className="text-purple-800 mb-4 flex-1">
-                  {tool.description}
-                </p>
-                {tool.warning && (
-                  <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-yellow-800 text-sm">
-                    {tool.warning}
-                  </div>
-                )}
-                {tool.requiresAdBlock && !hasUblock && (
-                  <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
-                    ⚠️ This site requires uBlock Origin for safe access
-              </div>
-                )}
-                <a
-                  href={tool.url}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                  className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
-                >
-                  <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                    <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                    <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                  </svg>
-                  Open {tool.name}
-                </a>
-              </div>
-            ))
-          ) : (
-            <div className="col-span-2 text-center text-gray-500 py-8">
-              No tools found matching your search criteria.
             </div>
           )}
+
+          {/* Terms of Service Notice */}
+          <div className="mb-6 p-4 bg-blue-50 border border-blue-200 rounded-lg">
+            <div className="flex items-center text-blue-800">
+              <svg className="h-5 w-5 mr-2" fill="currentColor" viewBox="0 0 20 20">
+                <path fillRule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clipRule="evenodd"/>
+              </svg>
+              <span>By using these tools, you agree to our <a href="/terms" className="underline">Terms of Service</a> and acknowledge that you are responsible for complying with your local laws and regulations.</span>
+            </div>
+          </div>
+
+          {/* View Toggle and Favorites Filter */}
+          <div className="flex justify-end items-center mb-4">
+              <button
+              onClick={() => setSelectedCategory(favorites.length ? 'favorites' : 'all')}
+              className={`flex items-center gap-2 px-4 py-2 rounded ${
+                selectedCategory === 'favorites' ? 'bg-purple-600 text-white' : 'bg-gray-100'
+              }`}
+            >
+              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                </svg>
+              Favorites ({favorites.length})
+              </button>
+          </div>
+
+          {/* Search and Filter Section */}
+          <div className="space-y-4 mb-8">
+            {/* Search Bar */}
+            <div className="relative">
+              <input
+                type="text"
+                placeholder="Search tools..."
+                value={searchQuery}
+                onChange={(e) => setSearchQuery(e.target.value)}
+                className="w-full px-4 py-2 rounded-lg border border-gray-300 focus:outline-none focus:ring-2 focus:ring-purple-600 focus:border-transparent"
+              />
+              <svg
+                className="absolute right-3 top-2.5 h-5 w-5 text-gray-400"
+                xmlns="http://www.w3.org/2000/svg"
+                viewBox="0 0 20 20"
+                fill="currentColor"
+              >
+                <path
+                  fillRule="evenodd"
+                  d="M8 4a4 4 0 100 8 4 4 0 000-8zM2 8a6 6 0 1110.89 3.476l4.817 4.817a1 1 0 01-1.414 1.414l-4.816-4.816A6 6 0 012 8z"
+                  clipRule="evenodd"
+                />
+                </svg>
+            </div>
+
+            {/* Category Filter */}
+            <div className="flex flex-wrap gap-2">
+              {categories.map(category => (
+                <button
+                  key={category.id}
+                  onClick={() => setSelectedCategory(category.id)}
+                  className={`px-4 py-2 rounded-lg transition duration-200 ${
+                    selectedCategory === category.id
+                      ? 'bg-purple-600 text-white'
+                      : 'bg-gray-100 text-gray-700 hover:bg-purple-100'
+                  }`}
+                >
+                  {category.name}
+              </button>
+              ))}
+            </div>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {filteredTools.length > 0 ? (
+              filteredTools.map((tool, index) => (
+                <div
+                  key={index}
+                  className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform"
+                >
+                  <div className="flex items-start gap-4 mb-4">
+                    <img
+                      src={tool.icon}
+                      alt={`${tool.name} icon`}
+                      className="w-12 h-12 rounded-lg"
+                    onError={(e) => {
+                        e.target.src = 'https://via.placeholder.com/48?text=' + tool.name[0];
+                      }}
+                    />
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
+                        <div className="flex gap-2">
+                          <button
+                            onClick={() => toggleFavorite(tool.name)}
+                            className={`p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 ${
+                              favorites.includes(tool.name) ? 'text-purple-700' : 'text-purple-500'
+                            } hover:text-purple-700`}
+                            title={favorites.includes(tool.name) ? 'Remove from favorites' : 'Add to favorites'}
+                            style={{ backgroundColor: 'white' }}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                            </svg>
+                          </button>
+                          <button
+                            onClick={() => handleCopy(tool.url)}
+                            className="p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 text-purple-500 hover:text-purple-700"
+                            title="Copy link"
+                            style={{ backgroundColor: 'white' }}
+                          >
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
+                              <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                            </svg>
+                          </button>
+                        </div>
+                      </div>
+                      <span className="inline-block bg-purple-200 text-purple-800 text-sm px-2 py-1 rounded mt-1">
+                        {tool.category}
+                      </span>
+                    </div>
+                  </div>
+                  <p className="text-purple-800 mb-4 flex-1">
+                    {tool.description}
+                  </p>
+                  <div className="flex items-center justify-between text-sm mb-4">
+                    <span className="text-gray-500">
+                      Last verified: {new Date(tool.lastVerified).toLocaleDateString()}
+                    </span>
+                    {tool.warning && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-yellow-800">
+                        {tool.warning}
+                      </div>
+                    )}
+                  </div>
+                  {tool.requiresAdBlock && !hasUblock && (
+                    <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
+                      ⚠️ This site requires uBlock Origin for safe access
+                    </div>
+                  )}
+                  <a
+                    href={tool.url}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                    className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
+                  >
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                      <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                      <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                    </svg>
+                    Open {tool.name}
+                  </a>
+                </div>
+              ))
+            ) : (
+              <div className="col-span-2 text-center text-gray-500 py-8">
+                No tools found matching your search criteria.
+              </div>
+            )}
+          </div>
         </div>
       </div>
     </div>
