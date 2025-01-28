@@ -21,7 +21,8 @@ function SignUp() {
     }
 
     try {
-      const response = await fetch('/api/auth/signup', {
+      const apiUrl = import.meta.env.VITE_API_URL || 'http://localhost:2511';
+      const response = await fetch(`${apiUrl}/api/auth/signup`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',
@@ -32,19 +33,21 @@ function SignUp() {
         })
       });
 
-      const data = await response.json();
-
       if (!response.ok) {
-        throw new Error(data.message || 'Signup failed');
+        const errorData = await response.json().catch(() => null);
+        throw new Error(errorData?.message || `Signup failed: ${response.statusText}`);
       }
 
+      const data = await response.json();
+      
       // Store token in localStorage
       localStorage.setItem('token', data.token);
       
       // Redirect to home page
       navigate('/');
     } catch (err) {
-      setError(err.message);
+      console.error('Signup error:', err);
+      setError(err.message || 'Failed to connect to the server. Please try again.');
     }
   };
 
