@@ -4,6 +4,16 @@ import SEOHead from '../components/SEOHead';
 function Tools() {
   const defaultTools = [
     {
+      name: "Request Tools",
+      description: "Need specific tools not listed here? Email me for personalized assistance with Windows, Office, games, or any other tools you're looking for. I'm here to help!",
+      icon: "/icons/tools/request.png",
+      category: "Support",
+      url: "mailto:nxtcarson@gmail.com?subject=Tool%20Request&body=Hi%20Carson%2C%0A%0AI'm%20looking%20for%20tools%20related%20to%3A%0A%0AThanks!",
+      requiresAdBlock: false,
+      warning: "✨ Feel free to reach out! I'll help you find what you need safely and securely.",
+      lastVerified: new Date().toISOString().split('T')[0]
+    },
+    {
       name: "ChatGPT",
       description: "AI-powered chat assistant for writing, research, and problem-solving.",
       icon: "/icons/tools/chatgpt.png",
