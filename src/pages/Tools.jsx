@@ -13,13 +13,12 @@ function Tools() {
       lastVerified: "2024-01-27"
     },
     {
-      name: "Microsoft Activation",
-      description: "PowerShell script for Windows/Office activation. Run 'irm https://get.activated.win | iex' in PowerShell as admin.",
-      icon: "/icons/tools/windows.png",
-      category: "System",
-      url: "https://get.activated.win",
-      requiresAdBlock: false,
-      warning: "⚠️ Instructions: 1) Right-click Windows Start Menu 2) Select PowerShell/Terminal as Admin 3) Paste the command 4) Select HWID(1) for Windows or Ohook(2) for Office"
+      name: "Microsoft Activation Support",
+      description: "For Windows/Office activation assistance, please email nxtcarson@gmail.com",
+      icon: "/icons/tools/support.png",
+      category: "Support",
+      url: "mailto:nxtcarson@gmail.com",
+      requiresAdBlock: false
     },
     {
       name: "SponsorBlock",
@@ -28,41 +27,6 @@ function Tools() {
       category: "Browser Extension",
       url: "https://sponsor.ajay.app",
       requiresAdBlock: false
-    },
-    {
-      name: "SpotX",
-      description: "Modified Spotify desktop client patcher for Windows.",
-      icon: "/icons/tools/spotx.png",
-      category: "Windows",
-      url: "https://github.com/amd64fox/SpotX",
-      requiresAdBlock: false,
-      warning: "⚠️ Use at your own risk. Follow instructions carefully."
-    },
-    {
-      name: "xManager",
-      description: "Modified Spotify app manager for Android. Install ad-free versions with premium features.",
-      icon: "/icons/tools/xmanager.png",
-      category: "Android",
-      url: "https://github.com/xManager-App/xManager",
-      requiresAdBlock: false,
-      warning: "⚠️ Only for Android devices. Use at your own risk."
-    },
-    {
-      name: "Mobilism",
-      description: "Community forum for modded Android apps and games.",
-      icon: "/icons/tools/mobilism.png",
-      category: "Android",
-      url: "https://forum.mobilism.org",
-      requiresAdBlock: true,
-      warning: "⚠️ Always scan downloads. Use AdBlock for safe browsing."
-    },
-    {
-      name: "IHaveNoTV",
-      description: "Free documentary streaming platform with a vast collection.",
-      icon: "/icons/tools/ihavenotv.png",
-      category: "Streaming",
-      url: "https://ihavenotv.com",
-      requiresAdBlock: true
     },
     {
       name: "Game Tools Support",
@@ -82,19 +46,11 @@ function Tools() {
     },
     {
       name: "Anna's Archive",
-      description: "Search engine for books, papers, comics, magazines.",
+      description: "Search engine for academic papers and educational materials.",
       icon: "/icons/tools/annas.png",
-      category: "Books",
+      category: "Academic",
       url: "https://annas-archive.org",
       requiresAdBlock: false
-    },
-    {
-      name: "Library Genesis",
-      description: "Free access to millions of books and articles.",
-      icon: "/icons/tools/libgen.png",
-      category: "Books",
-      url: "https://libgen.is",
-      requiresAdBlock: true
     },
     {
       name: "Symbolab",
