@@ -298,14 +298,15 @@ function Tools() {
                   className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform"
                 >
                   <div className="flex items-start gap-4 mb-4">
-                    <img
-                      src={tool.icon}
-                      alt={`${tool.name} icon`}
-                      className="w-12 h-12 rounded-lg"
-                    onError={(e) => {
-                        e.target.src = 'https://via.placeholder.com/48?text=' + tool.name[0];
-                      }}
-                    />
+                    <div className="flex items-center gap-4">
+                      {typeof tool.icon === 'string' ? (
+                        <img src={tool.icon} alt={`${tool.name} icon`} className="w-12 h-12 rounded-lg" />
+                      ) : (
+                        <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                          {tool.icon}
+                        </div>
+                      )}
+                    </div>
                     <div className="flex-1">
                       <div className="flex items-center justify-between">
                         <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
