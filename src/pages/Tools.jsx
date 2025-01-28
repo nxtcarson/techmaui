@@ -1,5 +1,8 @@
 import { useState, useEffect } from 'react';
 import SEOHead from '../components/SEOHead';
+import Auth from '../components/Auth';
+import useAuth from '../hooks/useAuth';
+import useFavorites from '../hooks/useFavorites';
 
 function Tools() {
   const defaultTools = [
@@ -62,11 +65,13 @@ function Tools() {
     }
   ];
 
+  const { isAuthenticated, user, login, logout } = useAuth();
+  const { favorites, toggleFavorite } = useFavorites(isAuthenticated);
   const [tools, setTools] = useState(defaultTools);
   const [selectedCategory, setSelectedCategory] = useState('all');
   const [hasUblock, setHasUblock] = useState(false);
   const [searchQuery, setSearchQuery] = useState('');
-  const [favorites, setFavorites] = useState([]);
+  const [showAuth, setShowAuth] = useState(false);
 
   // Get unique categories from tools
   const categories = [
@@ -166,15 +171,6 @@ function Tools() {
     }
   }, [favorites]);
 
-  const toggleFavorite = (toolName) => {
-    setFavorites(prev => {
-      const newFavorites = prev.includes(toolName)
-        ? prev.filter(name => name !== toolName)
-        : [...prev, toolName];
-      return newFavorites;
-    });
-  };
-
   const handleCopy = async (text, isEmail = false) => {
     try {
       await navigator.clipboard.writeText(text);
@@ -191,6 +187,19 @@ function Tools() {
         description="A curated collection of essential tools and resources for students."
         keywords="student tools, learning resources, educational tools, study aids"
       />
+      
+      {/* Auth Modal */}
+      {showAuth && (
+        <div className="fixed inset-0 bg-black/50 backdrop-blur-sm z-50 flex items-center justify-center p-4">
+          <div className="w-full max-w-md">
+            <Auth onLogin={(data) => {
+              login(data);
+              setShowAuth(false);
+            }} />
+          </div>
+        </div>
+      )}
+
       {/* Decorative Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -200,14 +209,36 @@ function Tools() {
 
       <div className="relative z-10 max-w-7xl mx-auto px-4 py-8">
         <div className="bg-white/80 backdrop-blur-lg rounded-2xl shadow-xl p-8 border border-purple-100">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-400">
-              Useful Tools
-            </h1>
-            <p className="mt-2 text-gray-600">
-              A curated collection of tools to enhance your experience
-            </p>
+          {/* Header with Auth */}
+          <div className="flex justify-between items-center mb-8">
+            <div className="text-center flex-1">
+              <h1 className="text-3xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-400">
+                Useful Tools
+              </h1>
+              <p className="mt-2 text-gray-600">
+                A curated collection of tools to enhance your experience
+              </p>
+            </div>
+            <div>
+              {isAuthenticated ? (
+                <div className="flex items-center gap-4">
+                  <span className="text-purple-600">{user.email}</span>
+                  <button
+                    onClick={logout}
+                    className="px-4 py-2 bg-purple-100 text-purple-600 rounded-lg hover:bg-purple-200 transition duration-200"
+                  >
+                    Logout
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => setShowAuth(true)}
+                  className="px-4 py-2 bg-purple-600 text-white rounded-lg hover:bg-purple-700 transition duration-200"
+                >
+                  Login / Sign Up
+                </button>
+              )}
+            </div>
           </div>
 
           {/* AdBlock Warning */}
