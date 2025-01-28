@@ -1,16 +1,25 @@
-import { BrowserRouter as Router, Routes, Route, Link } from 'react-router-dom';
+import { BrowserRouter as Router, Routes, Route, Link, Navigate } from 'react-router-dom';
 import Home from './pages/Home';
 import AdBlocking from './pages/AdBlocking';
 import Tools from './pages/Tools';
 import Study from './pages/Study';
 import Research from './pages/Research';
 import Budget from './pages/Budget';
-import Login from './pages/Login';
-import SignUp from './pages/SignUp';
+import Login from './components/Login';
+import SignUp from './components/Signup';
 import Extensions from './pages/Extensions';
 import About from './pages/About';
 import Terms from './pages/Terms';
 import { useState } from 'react';
+
+// Protected Route component
+const ProtectedRoute = ({ children }) => {
+  const token = localStorage.getItem('token');
+  if (!token) {
+    return <Navigate to="/login" />;
+  }
+  return children;
+};
 
 function App() {
   const [isDropdownOpen, setIsDropdownOpen] = useState(false);
@@ -153,6 +162,15 @@ function App() {
             <Route path="/signup" element={<SignUp />} />
             <Route path="/about" element={<About />} />
             <Route path="/terms" element={<Terms />} />
+            <Route
+              path="/dashboard"
+              element={
+                <ProtectedRoute>
+                  <div>Dashboard (Protected Route)</div>
+                </ProtectedRoute>
+              }
+            />
+            <Route path="/" element={<Navigate to="/login" />} />
           </Routes>
         </main>
 
