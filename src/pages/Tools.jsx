@@ -1,4 +1,5 @@
 import { useState, useEffect } from 'react';
+import SEOHead from '../components/SEOHead';
 
 function Tools() {
   const defaultTools = [
@@ -158,6 +159,7 @@ function Tools() {
   // Get unique categories from tools
   const categories = [
     { id: 'all', name: 'All Tools' },
+    { id: 'favorites', name: 'Favorites' },
     ...Array.from(new Set(defaultTools.map(tool => tool.category)))
       .map(category => ({
         id: category.toLowerCase().replace(/\s+/g, '-'),
@@ -168,13 +170,16 @@ function Tools() {
 
   // Filter tools based on category and search query
   const filteredTools = tools
-    .filter(tool => 
-      (selectedCategory === 'all' || tool.category.toLowerCase().replace(/\s+/g, '-') === selectedCategory) &&
-      (searchQuery === '' || 
-        tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        tool.category.toLowerCase().includes(searchQuery.toLowerCase()))
-    );
+    .filter(tool => {
+      if (selectedCategory === 'favorites') {
+        return favorites.includes(tool.name);
+      }
+      return (selectedCategory === 'all' || tool.category.toLowerCase().replace(/\s+/g, '-') === selectedCategory) &&
+        (searchQuery === '' || 
+          tool.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          tool.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+          tool.category.toLowerCase().includes(searchQuery.toLowerCase()));
+    });
 
   // Save to localStorage whenever tools change
   useEffect(() => {

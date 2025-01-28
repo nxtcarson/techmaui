@@ -1,68 +1,60 @@
 # TechMaui
 
-A comprehensive guide to essential tools, extensions, and resources for improving your digital experience.
+A comprehensive platform providing essential tools and resources for students.
 
-<details>
-<summary>📸 Screenshots</summary>
+## Features
 
-| Page | Screenshot |
-|------|------------|
-| Home | ![Home Page](/public/icons/pages/home-page.png) |
-| Ad Blocking | ![Ad Blocking](/public/icons/pages/adblocking-page.png) |
-| Extensions | ![Extensions](/public/icons/pages/extensions-page.png) |
-| Tools | ![Tools](/public/icons/pages/tools-page.png) |
-| Study | ![Study](/public/icons/pages/study-page.png) |
-| Research | ![Research](/public/icons/pages/research-page.png) |
-| Budget | ![Budget](/public/icons/pages/budget-page.png) |
+### Tools & Resources
+- Curated collection of educational tools
+- Tool verification system with last verified dates
+- Tool categories and search functionality
+- Favorite tools system
+- AdBlock detection for safe browsing
+- Copy link functionality
 
-</details>
+### Budget Management
+- Student expense tracker
+- Monthly budget templates
+- Money-saving tips
+- Recommended budget tools
+- Expense categorization
+- Historical expense tracking
 
-## 🚀 Features
+### SEO & Performance
+- Optimized meta tags for better visibility
+- Social media sharing cards
+- Performance-optimized images
+- Mobile-responsive design
+- Fast loading times
 
-| Category | Description |
-|----------|-------------|
-| Ad Blocking | Step-by-step guide for setting up uBlock Origin |
-| Extensions | Curated browser extensions for productivity and learning |
-| Tools | Essential software and online resources |
-| Study | Study techniques and educational resources |
-| Research | Academic research tools and citation guides |
-| Budget | Money-saving tips and financial management |
+### Security
+- AdBlock detection and warnings
+- Safe browsing recommendations
+- Terms of Service compliance
+- Data persistence with localStorage
+- Secure external links
 
-## 🛠️ Quick Setup
+## Getting Started
 
-```bash
-git clone https://github.com/nxtcarson/techmaui.git
-cd techmaui
-npm install
-npm run dev
-```
+1. Clone the repository
+2. Install dependencies: `npm install`
+3. Set up environment variables
+4. Start development server: `npm run dev`
 
-## 💻 Development
+For detailed setup instructions, see [DEPLOYMENT.md](DEPLOYMENT.md)
 
-| Category | Details |
-|----------|----------|
-| Tech Stack | React, Tailwind CSS, Vite |
-| Scripts | `dev`, `build`, `preview`, `lint` |
-| Structure | `/src`: Components & Pages<br>`/public`: Static assets |
+## Contributing
 
-<details>
-<summary>📚 Additional Info</summary>
+1. Fork the repository
+2. Create your feature branch
+3. Commit your changes
+4. Push to the branch
+5. Create a Pull Request
 
-### Prerequisites
-- Node.js & npm
-- Modern web browser
-- Git
+## License
 
-### Contributing
-1. Fork the repo
-2. Create feature branch
-3. Commit changes
-4. Push to branch
-5. Open pull request
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.
 
-### License
-MIT License - See LICENSE file
+## Support
 
-### Support
-Contact: nxtcarson@gmail.com
-</details> 
+For support, email nxtcarson@gmail.com or create an issue in the repository. 

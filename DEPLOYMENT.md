@@ -1,213 +1,153 @@
-# TechMaui Deployment Guide
+# Deployment Guide
 
 ## Prerequisites
-1. Install these on your computer:
-   - [Node.js](https://nodejs.org/) (v18 or higher)
-   - [Git](https://git-scm.com/)
-   - [Heroku CLI](https://devcenter.heroku.com/articles/heroku-cli)
 
-## Local Setup Steps
+- Node.js >= 18.0.0
+- PostgreSQL database
+- Git
+- Heroku CLI (for Heroku deployment)
 
-1. **Clone and Install Dependencies**
-   ```bash
-   # Clone your repository
-   git clone https://github.com/yourusername/techmaui.git
-   cd techmaui
+## Local Development Setup
 
-   # Install dependencies
-   npm install
-   ```
+1. Clone the repository:
+```bash
+git clone https://github.com/nxtcarson/techmaui.git
+cd techmaui
+```
 
-2. **Set Up Environment Variables**
-   ```bash
-   # Copy example env file
-   cp .env.example .env
+2. Install dependencies:
+```bash
+npm install
+```
 
-   # Edit .env with your values
-   # You'll need:
-   # - A secure JWT_SECRET (you can generate one with: openssl rand -base64 32)
-   # - Your DATABASE_URL (you'll get this from Heroku later)
-   ```
+3. Create environment file:
+```bash
+cp .env.example .env
+```
 
-## Heroku Deployment Steps
+4. Update `.env` with your configuration:
+```env
+# Server Configuration
+PORT=3000
+NODE_ENV=development
 
-1. **Create Heroku App**
-   ```bash
-   # Login to Heroku
-   heroku login
+# Database Configuration
+DATABASE_URL=postgresql://username:password@localhost:5432/techmaui
 
-   # Create new Heroku app
-   heroku create techmaui
+# JWT Configuration
+JWT_SECRET=your_jwt_secret_here
+JWT_EXPIRES_IN=7d
 
-   # Add PostgreSQL database
-   heroku addons:create heroku-postgresql:hobby-dev
-   ```
+# Client Configuration
+VITE_API_URL=http://localhost:3000
+```
 
-2. **Configure Heroku Environment**
-   ```bash
-   # Set environment variables
-   heroku config:set NODE_ENV=production
-   heroku config:set JWT_SECRET=your_secure_secret_here
+5. Set up the database:
+- Create a PostgreSQL database
+- Run the schema migrations (provided in `server/db/schema.sql`)
 
-   # Verify your config
-   heroku config
-   ```
+6. Start the development server:
+```bash
+npm run dev
+```
 
-3. **Set Up Database**
-   ```bash
-   # Get your database URL
-   heroku config:get DATABASE_URL
+## Production Deployment (Heroku)
 
-   # Connect to database and run schema
-   # Option 1: Using Heroku CLI
-   heroku pg:psql < server/db/schema.sql
+1. Create a new Heroku app:
+```bash
+heroku create your-app-name
+```
 
-   # Option 2: Using pgAdmin or another PostgreSQL client
-   # 1. Copy the DATABASE_URL from above
-   # 2. Open pgAdmin
-   # 3. Create new server connection using the DATABASE_URL
-   # 4. Open query tool
-   # 5. Copy contents of server/db/schema.sql and run
-   ```
+2. Add PostgreSQL addon:
+```bash
+heroku addons:create heroku-postgresql:hobby-dev
+```
 
-4. **Deploy Code**
-   ```bash
-   # Add all files
-   git add .
+3. Configure environment variables:
+```bash
+heroku config:set NODE_ENV=production
+heroku config:set JWT_SECRET=your_production_jwt_secret
+heroku config:set JWT_EXPIRES_IN=7d
+```
 
-   # Commit changes
-   git commit -m "Ready for deployment"
+4. Deploy to Heroku:
+```bash
+git push heroku main
+```
 
-   # Push to Heroku
-   git push heroku main
+## Required Dependencies
 
-   # Ensure at least one instance is running
-   heroku ps:scale web=1
-   ```
+### Production Dependencies
+- react
+- react-dom
+- react-router-dom
+- react-helmet (for SEO)
+- express
+- pg (PostgreSQL client)
+- bcrypt
+- jsonwebtoken
+- cors
+- dotenv
 
-5. **Verify Deployment**
-   ```bash
-   # Open your app in browser
-   heroku open
+### Development Dependencies
+- vite
+- @vitejs/plugin-react
+- tailwindcss
+- postcss
+- autoprefixer
+- eslint and related plugins
 
-   # Check logs if there are issues
-   heroku logs --tail
-   ```
+## Features & Configuration
 
-## Post-Deployment Checks
+### SEO
+- Meta tags are managed through the `SEOHead` component
+- Update default SEO values in `src/components/SEOHead.jsx`
+- Each page should include the SEOHead component with relevant meta data
 
-1. **Test Authentication**
-   - Try creating a new account
-   - Try logging in
-   - Verify that you stay logged in after refresh
+### Database
+- PostgreSQL is used for data persistence
+- Connection is managed in `server/db/index.js`
+- Schema available in `server/db/schema.sql`
 
-2. **Test Database**
-   - Verify users are being saved
-   - Check database connection:
-     ```bash
-     heroku pg:info
-     ```
+### Authentication
+- JWT-based authentication
+- Tokens expire based on JWT_EXPIRES_IN env variable
+- Protected routes require valid JWT in Authorization header
 
-3. **Monitor Performance**
-   - Check application logs:
-     ```bash
-     heroku logs --tail
-     ```
-   - Monitor dyno usage:
-     ```bash
-     heroku ps
-     ```
+### Local Storage
+The following data is stored in localStorage:
+- User preferences
+- Tool favorites
+- Recent expenses
+- Authentication tokens
 
-## Common Issues & Solutions
-
-1. **Database Connection Issues**
-   - Verify DATABASE_URL is set: `heroku config:get DATABASE_URL`
-   - Check SSL settings in `server/db/index.js`
-   - Verify schema was applied: `heroku pg:info`
-
-2. **Application Errors**
-   - Check logs: `heroku logs --tail`
-   - Verify all environment variables are set
-   - Ensure buildpacks are correct: `heroku buildpacks`
-
-3. **Static Files Not Loading**
-   - Verify the build process completed: check build logs
-   - Check `server/index.js` static file serving configuration
-   - Verify `dist` directory is in `.gitignore`
+### Security Considerations
+1. Install SSL certificate in production
+2. Secure all environment variables
+3. Implement rate limiting
+4. Enable CORS with specific origins
+5. Keep dependencies updated
+6. Regular security audits
+7. Data backup strategy
 
 ## Maintenance
 
-1. **Regular Updates**
-   ```bash
-   # Update dependencies
-   npm update
+### Regular Tasks
+1. Update dependencies monthly
+2. Verify tool links weekly
+3. Backup database daily
+4. Monitor error logs
+5. Update content regularly
 
-   # Push updates
-   git add .
-   git commit -m "Update dependencies"
-   git push heroku main
-   ```
+### Troubleshooting
+1. Check logs: `heroku logs --tail`
+2. Verify environment variables
+3. Check database connection
+4. Monitor application metrics
+5. Review error tracking
 
-2. **Database Backups**
-   ```bash
-   # Create manual backup
-   heroku pg:backups:capture
+## Support
 
-   # Download latest backup
-   heroku pg:backups:download
-   ```
-
-3. **Monitoring**
-   ```bash
-   # Check app metrics
-   heroku ps
-   heroku pg:info
-   ```
-
-## Useful Heroku Commands
-
-```bash
-# View app logs
-heroku logs --tail
-
-# Run database migrations
-heroku pg:psql < server/db/schema.sql
-
-# Restart application
-heroku restart
-
-# Scale dynos
-heroku ps:scale web=1
-
-# Open app
-heroku open
-
-# Access production shell
-heroku run bash
-```
-
-## Local Development After Deployment
-
-1. **Switch to Local Database**
-   - Update `.env` with local PostgreSQL credentials
-   - Create local database: `createdb techmaui`
-   - Run schema: `psql techmaui < server/db/schema.sql`
-
-2. **Run Development Server**
-   ```bash
-   npm run dev
-   ```
-
-## Security Notes
-
-1. Never commit `.env` file
-2. Regularly rotate JWT_SECRET
-3. Keep dependencies updated
-4. Monitor Heroku security alerts
-5. Regularly backup database
-
-## Additional Resources
-
-- [Heroku Node.js Guide](https://devcenter.heroku.com/articles/nodejs-support)
-- [Heroku PostgreSQL Guide](https://devcenter.heroku.com/articles/heroku-postgresql)
-- [Heroku Deployment Guide](https://devcenter.heroku.com/articles/deploying-nodejs) 
+For issues or questions:
+- Create GitHub issue
+- Contact: nxtcarson@gmail.com 
