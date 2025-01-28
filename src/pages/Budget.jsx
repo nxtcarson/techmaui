@@ -1,50 +1,8 @@
 import React, { useState, useEffect } from 'react';
 import { Link } from 'react-router-dom';
-import { useTheme } from '../contexts/ThemeContext';
+import SEOHead from '../components/SEOHead';
 
 function Budget() {
-  const { isDarkMode } = useTheme();
-  const [expenses, setExpenses] = useState(() => {
-    const saved = localStorage.getItem('expenses');
-    return saved ? JSON.parse(saved) : [];
-  });
-  const [newExpense, setNewExpense] = useState({ description: '', amount: '', category: 'other' });
-
-  const categories = [
-    'Books',
-    'Food',
-    'Transportation',
-    'School Supplies',
-    'Entertainment',
-    'Other'
-  ];
-
-  useEffect(() => {
-    localStorage.setItem('expenses', JSON.stringify(expenses));
-  }, [expenses]);
-
-  const handleSubmit = (e) => {
-    e.preventDefault();
-    if (!newExpense.description || !newExpense.amount) return;
-
-    setExpenses([
-      ...expenses,
-      {
-        ...newExpense,
-        id: Date.now(),
-        date: new Date().toISOString().split('T')[0],
-        amount: parseFloat(newExpense.amount)
-      }
-    ]);
-    setNewExpense({ description: '', amount: '', category: 'other' });
-  };
-
-  const handleDelete = (id) => {
-    setExpenses(expenses.filter(expense => expense.id !== id));
-  };
-
-  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
-
   const savingCategories = [
     {
       title: "Entertainment",
@@ -209,234 +167,256 @@ function Budget() {
     ]
   };
 
+  // Expense Tracker State
+  const [expenses, setExpenses] = useState(() => {
+    const saved = localStorage.getItem('studentExpenses');
+    return saved ? JSON.parse(saved) : [];
+  });
+  const [newExpense, setNewExpense] = useState({
+    description: '',
+    amount: '',
+    category: 'Essential Expenses',
+    date: new Date().toISOString().split('T')[0]
+  });
+
+  // Save expenses to localStorage
+  useEffect(() => {
+    localStorage.setItem('studentExpenses', JSON.stringify(expenses));
+  }, [expenses]);
+
+  const handleAddExpense = (e) => {
+    e.preventDefault();
+    if (!newExpense.description || !newExpense.amount) return;
+
+    setExpenses([
+      ...expenses,
+      {
+        ...newExpense,
+        id: Date.now(),
+        amount: parseFloat(newExpense.amount)
+      }
+    ]);
+    setNewExpense({
+      description: '',
+      amount: '',
+      category: 'Essential Expenses',
+      date: new Date().toISOString().split('T')[0]
+    });
+  };
+
+  const handleDeleteExpense = (id) => {
+    setExpenses(expenses.filter(expense => expense.id !== id));
+  };
+
+  const categories = monthlyBudgetTemplate.categories.map(cat => cat.name);
+  const totalExpenses = expenses.reduce((sum, expense) => sum + expense.amount, 0);
+
   return (
-    <div className={`min-h-[calc(100vh-16rem)] relative bg-gradient-to-br ${
-      isDarkMode ? 'from-gray-800 via-gray-900 to-gray-800' : 'from-purple-50 via-white to-purple-50'
-    } overflow-hidden`}>
-      {/* Decorative Elements */}
-      <div className="absolute inset-0 z-0">
-        <div className={`absolute top-0 left-0 w-64 h-64 ${
-          isDarkMode ? 'bg-purple-900' : 'bg-purple-100'
-        } rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob`}></div>
-        <div className={`absolute top-0 right-0 w-64 h-64 ${
-          isDarkMode ? 'bg-purple-800' : 'bg-purple-200'
-        } rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-2000`}></div>
-        <div className={`absolute -bottom-8 left-20 w-64 h-64 ${
-          isDarkMode ? 'bg-purple-700' : 'bg-purple-300'
-        } rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob animation-delay-4000`}></div>
-      </div>
+    <div className="w-full space-y-8 p-8">
+      <SEOHead 
+        title="Student Budget Guide"
+        description="Smart money management tips, tools, and expense tracking for students."
+        keywords="student budget, expense tracker, money saving tips, student finance"
+      />
+      
+      <div className="max-w-4xl mx-auto">
+        <h1 className="text-4xl font-bold text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-900 mb-4">
+          Student Budget Guide
+        </h1>
+        <p className="text-xl text-gray-600 mb-8">
+          Smart money management tips and tools for students.
+        </p>
 
-      <div className="relative z-10 max-w-4xl mx-auto px-4 py-8">
-        <div className={`${
-          isDarkMode ? 'bg-gray-800/80' : 'bg-white/80'
-        } backdrop-blur-lg rounded-2xl shadow-xl p-8 border ${
-          isDarkMode ? 'border-gray-700' : 'border-purple-100'
-        }`}>
-          <h1 className={`text-3xl font-bold ${
-            isDarkMode ? 'text-white' : 'text-transparent bg-clip-text bg-gradient-to-r from-purple-600 to-purple-400'
-          } mb-8 text-center`}>
-            Student Expense Tracker
-          </h1>
-
-          {/* Add Expense Form */}
-          <form onSubmit={handleSubmit} className="mb-8">
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-4">
-              <input
-                type="text"
-                placeholder="Description"
-                value={newExpense.description}
-                onChange={(e) => setNewExpense({ ...newExpense, description: e.target.value })}
-                className={`px-4 py-2 rounded-lg ${
-                  isDarkMode 
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                    : 'bg-white border-gray-300'
-                } border focus:outline-none focus:ring-2 focus:ring-purple-500`}
-              />
-              <input
-                type="number"
-                placeholder="Amount"
-                value={newExpense.amount}
-                onChange={(e) => setNewExpense({ ...newExpense, amount: e.target.value })}
-                className={`px-4 py-2 rounded-lg ${
-                  isDarkMode 
-                    ? 'bg-gray-700 border-gray-600 text-white placeholder-gray-400'
-                    : 'bg-white border-gray-300'
-                } border focus:outline-none focus:ring-2 focus:ring-purple-500`}
-              />
-              <select
-                value={newExpense.category}
-                onChange={(e) => setNewExpense({ ...newExpense, category: e.target.value })}
-                className={`px-4 py-2 rounded-lg ${
-                  isDarkMode 
-                    ? 'bg-gray-700 border-gray-600 text-white'
-                    : 'bg-white border-gray-300'
-                } border focus:outline-none focus:ring-2 focus:ring-purple-500`}
-              >
-                {categories.map(category => (
-                  <option key={category.toLowerCase()} value={category.toLowerCase()}>
-                    {category}
-                  </option>
-                ))}
-              </select>
-            </div>
-            <button
-              type="submit"
-              className={`mt-4 w-full py-2 px-4 rounded-lg ${
-                isDarkMode
-                  ? 'bg-purple-600 hover:bg-purple-700'
-                  : 'bg-purple-500 hover:bg-purple-600'
-              } text-white font-medium transition-colors duration-200`}
-            >
-              Add Expense
-            </button>
-          </form>
-
-          {/* Total Expenses */}
-          <div className={`mb-8 p-4 rounded-lg ${
-            isDarkMode ? 'bg-gray-700' : 'bg-purple-50'
-          }`}>
-            <h2 className={`text-xl font-semibold ${
-              isDarkMode ? 'text-white' : 'text-purple-900'
-            } mb-2`}>
-              Total Expenses
-            </h2>
-            <p className={`text-2xl font-bold ${
-              isDarkMode ? 'text-purple-400' : 'text-purple-600'
-            }`}>
-              ${totalExpenses.toFixed(2)}
-            </p>
+        {/* Money-Saving Tips */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-purple-900 mb-6">Money-Saving Tips</h2>
+          <div className="space-y-6">
+            {savingCategories.map((category, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-semibold text-purple-800 mb-3">{category.title}</h3>
+                <p className="text-gray-600 mb-4">{category.description}</p>
+                <ul className="space-y-3">
+                  {category.tips.map((tip, tipIndex) => (
+                    <li key={tipIndex} className="flex items-start">
+                      <svg className="h-5 w-5 text-purple-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
+                      </svg>
+                      <div>
+                        <span className="text-gray-600">
+                          {typeof tip === 'string' ? tip : tip.tip}
+                        </span>
+                        {typeof tip !== 'string' && tip.link && (
+                          <Link
+                            to={tip.link}
+                            className="block text-sm text-purple-600 hover:text-purple-800 mt-1"
+                          >
+                            {tip.linkText} →
+                          </Link>
+                        )}
+                      </div>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
           </div>
+        </section>
 
-          {/* Expense List */}
-          <div className="space-y-4">
-            {expenses.map(expense => (
-              <div
-                key={expense.id}
-                className={`p-4 rounded-lg ${
-                  isDarkMode ? 'bg-gray-700' : 'bg-white'
-                } shadow flex justify-between items-center`}
-              >
-                <div>
-                  <h3 className={`font-medium ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    {expense.description}
-                  </h3>
-                  <div className="flex gap-2 text-sm">
-                    <span className={`${
-                      isDarkMode ? 'text-gray-400' : 'text-gray-500'
-                    }`}>
-                      {expense.date}
-                    </span>
-                    <span className={`${
-                      isDarkMode ? 'text-purple-400' : 'text-purple-600'
-                    } capitalize`}>
-                      {expense.category}
-                    </span>
-                  </div>
-                </div>
-                <div className="flex items-center gap-4">
-                  <span className={`font-medium ${
-                    isDarkMode ? 'text-white' : 'text-gray-900'
-                  }`}>
-                    ${expense.amount.toFixed(2)}
-                  </span>
-                  <button
-                    onClick={() => handleDelete(expense.id)}
-                    className="text-red-500 hover:text-red-600"
-                  >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
-                    </svg>
-                  </button>
+        {/* Budget Tools */}
+        <section className="mb-12">
+          <h2 className="text-2xl font-semibold text-purple-900 mb-6">Recommended Tools</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {budgetTools.map((category, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-semibold text-purple-800 mb-4">{category.title}</h3>
+                <div className="space-y-4">
+                  {category.tools.map((tool, toolIndex) => (
+                    <a
+                      key={toolIndex}
+                      href={tool.url}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      className="block p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
+                    >
+                      <span className="font-medium text-purple-900">{tool.name}</span>
+                      <p className="text-sm text-purple-700 mt-1">{tool.description}</p>
+                    </a>
+                  ))}
                 </div>
               </div>
             ))}
           </div>
+        </section>
 
-          {/* Money-Saving Tips */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-purple-900 mb-6">Money-Saving Tips</h2>
-            <div className="space-y-6">
-              {savingCategories.map((category, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                  <h3 className="text-xl font-semibold text-purple-800 mb-3">{category.title}</h3>
-                  <p className="text-gray-600 mb-4">{category.description}</p>
-                  <ul className="space-y-3">
-                    {category.tips.map((tip, tipIndex) => (
-                      <li key={tipIndex} className="flex items-start">
-                        <svg className="h-5 w-5 text-purple-500 mr-2 mt-0.5 flex-shrink-0" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M5 13l4 4L19 7" />
-                        </svg>
-                        <div>
-                          <span className="text-gray-600">
-                            {typeof tip === 'string' ? tip : tip.tip}
-                          </span>
-                          {typeof tip !== 'string' && tip.link && (
-                            <Link
-                              to={tip.link}
-                              className="block text-sm text-purple-600 hover:text-purple-800 mt-1"
-                            >
-                              {tip.linkText} →
-                            </Link>
-                          )}
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
+        {/* Budget Template */}
+        <section>
+          <h2 className="text-2xl font-semibold text-purple-900 mb-6">{monthlyBudgetTemplate.title}</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {monthlyBudgetTemplate.categories.map((category, index) => (
+              <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
+                <h3 className="text-xl font-semibold text-purple-800 mb-4">{category.name}</h3>
+                <ul className="space-y-2">
+                  {category.items.map((item, itemIndex) => (
+                    <li key={itemIndex} className="flex items-start">
+                      <svg className="h-5 w-5 text-purple-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                        <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
+                      </svg>
+                      <span className="text-gray-600">{item}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            ))}
+          </div>
+        </section>
+
+        {/* Expense Tracker */}
+        <section className="max-w-4xl mx-auto mt-12">
+          <h2 className="text-2xl font-semibold text-purple-900 mb-6">Expense Tracker</h2>
+          
+          {/* Add Expense Form */}
+          <div className="bg-white rounded-lg shadow-lg p-6 mb-6">
+            <form onSubmit={handleAddExpense} className="space-y-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Description</label>
+                  <input
+                    type="text"
+                    value={newExpense.description}
+                    onChange={(e) => setNewExpense({...newExpense, description: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                    placeholder="e.g., Textbooks"
+                    required
+                  />
                 </div>
-              ))}
-            </div>
-          </section>
-
-          {/* Budget Tools */}
-          <section className="mb-12">
-            <h2 className="text-2xl font-semibold text-purple-900 mb-6">Recommended Tools</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {budgetTools.map((category, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                  <h3 className="text-xl font-semibold text-purple-800 mb-4">{category.title}</h3>
-                  <div className="space-y-4">
-                    {category.tools.map((tool, toolIndex) => (
-                      <a
-                        key={toolIndex}
-                        href={tool.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                        className="block p-3 bg-purple-50 rounded-lg hover:bg-purple-100 transition-colors"
-                      >
-                        <span className="font-medium text-purple-900">{tool.name}</span>
-                        <p className="text-sm text-purple-700 mt-1">{tool.description}</p>
-                      </a>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Amount ($)</label>
+                  <input
+                    type="number"
+                    value={newExpense.amount}
+                    onChange={(e) => setNewExpense({...newExpense, amount: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                    placeholder="0.00"
+                    step="0.01"
+                    min="0"
+                    required
+                  />
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Category</label>
+                  <select
+                    value={newExpense.category}
+                    onChange={(e) => setNewExpense({...newExpense, category: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                  >
+                    {categories.map((category, index) => (
+                      <option key={index} value={category}>{category}</option>
                     ))}
+                  </select>
+                </div>
+                <div>
+                  <label className="block text-sm font-medium text-gray-700 mb-1">Date</label>
+                  <input
+                    type="date"
+                    value={newExpense.date}
+                    onChange={(e) => setNewExpense({...newExpense, date: e.target.value})}
+                    className="w-full px-3 py-2 border border-gray-300 rounded-md focus:ring-purple-500 focus:border-purple-500"
+                    required
+                  />
+                </div>
+              </div>
+              <button
+                type="submit"
+                className="w-full bg-purple-600 text-white py-2 px-4 rounded-md hover:bg-purple-700 transition-colors"
+              >
+                Add Expense
+              </button>
+            </form>
+          </div>
+
+          {/* Expenses List */}
+          <div className="bg-white rounded-lg shadow-lg p-6">
+            <div className="flex justify-between items-center mb-4">
+              <h3 className="text-lg font-semibold text-purple-900">Recent Expenses</h3>
+              <span className="text-lg font-semibold text-purple-600">
+                Total: ${totalExpenses.toFixed(2)}
+              </span>
+            </div>
+            
+            <div className="space-y-4">
+              {expenses.length === 0 ? (
+                <p className="text-gray-500 text-center py-4">No expenses recorded yet.</p>
+              ) : (
+                expenses.sort((a, b) => new Date(b.date) - new Date(a.date)).map(expense => (
+                  <div
+                    key={expense.id}
+                    className="flex items-center justify-between p-4 bg-purple-50 rounded-lg"
+                  >
+                    <div className="flex-1">
+                      <div className="flex items-center justify-between">
+                        <span className="font-medium text-purple-900">{expense.description}</span>
+                        <span className="font-semibold text-purple-700">${expense.amount.toFixed(2)}</span>
+                      </div>
+                      <div className="flex items-center text-sm text-purple-600 mt-1">
+                        <span>{expense.category}</span>
+                        <span className="mx-2">•</span>
+                        <span>{new Date(expense.date).toLocaleDateString()}</span>
+                      </div>
+                    </div>
+                    <button
+                      onClick={() => handleDeleteExpense(expense.id)}
+                      className="ml-4 text-red-500 hover:text-red-700 transition-colors"
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M9 2a1 1 0 00-.894.553L7.382 4H4a1 1 0 000 2v10a2 2 0 002 2h8a2 2 0 002-2V6a1 1 0 100-2h-3.382l-.724-1.447A1 1 0 0011 2H9zM7 8a1 1 0 012 0v6a1 1 0 11-2 0V8zm5-1a1 1 0 00-1 1v6a1 1 0 102 0V8a1 1 0 00-1-1z" clipRule="evenodd" />
+                      </svg>
+                    </button>
                   </div>
-                </div>
-              ))}
+                ))
+              )}
             </div>
-          </section>
-
-          {/* Budget Template */}
-          <section>
-            <h2 className="text-2xl font-semibold text-purple-900 mb-6">{monthlyBudgetTemplate.title}</h2>
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              {monthlyBudgetTemplate.categories.map((category, index) => (
-                <div key={index} className="bg-white rounded-lg shadow-lg p-6 hover:shadow-xl transition-shadow">
-                  <h3 className="text-xl font-semibold text-purple-800 mb-4">{category.name}</h3>
-                  <ul className="space-y-2">
-                    {category.items.map((item, itemIndex) => (
-                      <li key={itemIndex} className="flex items-start">
-                        <svg className="h-5 w-5 text-purple-500 mr-2 mt-0.5" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-                          <path strokeLinecap="round" strokeLinejoin="round" strokeWidth="2" d="M12 8c-1.657 0-3 .895-3 2s1.343 2 3 2 3 .895 3 2-1.343 2-3 2m0-8c1.11 0 2.08.402 2.599 1M12 8V7m0 1v8m0 0v1m0-1c-1.11 0-2.08-.402-2.599-1M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-                        </svg>
-                        <span className="text-gray-600">{item}</span>
-                      </li>
-                    ))}
-                  </ul>
-                </div>
-              ))}
-            </div>
-          </section>
-        </div>
+          </div>
+        </section>
       </div>
     </div>
   );

@@ -269,6 +269,11 @@ function Tools() {
 
   return (
     <div className="min-h-[calc(100vh-16rem)] relative bg-gradient-to-br from-purple-50 via-white to-purple-50 overflow-hidden">
+      <SEOHead 
+        title="Useful Tools"
+        description="A curated collection of essential tools and resources for students."
+        keywords="student tools, learning resources, educational tools, study aids"
+      />
       {/* Decorative Elements */}
       <div className="absolute inset-0 z-0">
         <div className="absolute top-0 left-0 w-64 h-64 bg-purple-100 rounded-full mix-blend-multiply filter blur-xl opacity-70 animate-blob"></div>
@@ -421,16 +426,17 @@ function Tools() {
                   <p className="text-purple-800 mb-4 flex-1">
                     {tool.description}
                   </p>
-                  <div className="flex items-center justify-between text-sm mb-4">
-                    <span className="text-gray-500">
-                      Last verified: {new Date(tool.lastVerified).toLocaleDateString()}
-                    </span>
-                    {tool.warning && (
-                      <div className="bg-yellow-50 border border-yellow-200 rounded p-3 text-yellow-800">
-                        {tool.warning}
-                      </div>
-                    )}
+                  <div className="flex items-center text-sm text-purple-600 mb-2">
+                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                    </svg>
+                    Last verified: {new Date(tool.lastVerified).toLocaleDateString()}
                   </div>
+                  {tool.warning && (
+                    <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-yellow-800 text-sm">
+                      {tool.warning}
+                    </div>
+                  )}
                   {tool.requiresAdBlock && !hasUblock && (
                     <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
                       ⚠️ This site requires uBlock Origin for safe access
