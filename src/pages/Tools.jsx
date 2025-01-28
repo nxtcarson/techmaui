@@ -8,10 +8,11 @@ function Tools() {
       description: "Need specific tools not listed here? Email me for personalized assistance with Windows, Office, games, or any other tools you're looking for. I'm here to help!",
       icon: "/icons/tools/request.png",
       category: "Support",
-      url: "mailto:nxtcarson@gmail.com?subject=Tool%20Request&body=Hi%20Carson%2C%0A%0AI'm%20looking%20for%20tools%20related%20to%3A%0A%0AThanks!",
+      url: "nxtcarson@gmail.com",
       requiresAdBlock: false,
-      warning: "✨ Feel free to reach out! I'll help you find what you need safely and securely.",
-      lastVerified: new Date().toISOString().split('T')[0]
+      warning: "✨ Click the button below to copy my email address to your clipboard!",
+      lastVerified: new Date().toISOString().split('T')[0],
+      isEmail: true
     },
     {
       name: "ChatGPT",
@@ -185,10 +186,10 @@ function Tools() {
     });
   };
 
-  const handleCopy = async (text) => {
+  const handleCopy = async (text, isEmail = false) => {
     try {
       await navigator.clipboard.writeText(text);
-      alert('Copied to clipboard!');
+      alert(isEmail ? 'Email copied to clipboard!' : 'Link copied to clipboard!');
     } catch (error) {
       console.error('Error copying:', error);
     }
@@ -333,7 +334,7 @@ function Tools() {
                             </svg>
                           </button>
                           <button
-                            onClick={() => handleCopy(tool.url)}
+                            onClick={() => handleCopy(tool.url, tool.isEmail)}
                             className="p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 text-purple-500 hover:text-purple-700"
                             title="Copy link"
                             style={{ backgroundColor: 'white' }}
@@ -369,18 +370,28 @@ function Tools() {
                       ⚠️ This site requires uBlock Origin for safe access
                     </div>
                   )}
-                  <a
-                    href={tool.url}
-                        target="_blank"
-                        rel="noopener noreferrer"
+                  <button
+                    onClick={() => handleCopy(tool.url, tool.isEmail)}
                     className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
                   >
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                      <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
-                      <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
-                    </svg>
-                    Open {tool.name}
-                  </a>
+                    {tool.isEmail ? (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
+                          <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                        </svg>
+                        Email me at nxtcarson@gmail.com
+                      </>
+                    ) : (
+                      <>
+                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                          <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                          <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                        </svg>
+                        Open {tool.name}
+                      </>
+                    )}
+                  </button>
                 </div>
               ))
             ) : (
