@@ -7,6 +7,17 @@ import useFavorites from '../hooks/useFavorites';
 function Tools() {
   const defaultTools = [
     {
+      name: "🔥 Edpuzzle Helper",
+      description: "Drag this to your bookmarks bar to enhance your Edpuzzle experience! Trending tool of the month.",
+      icon: "/icons/tools/edpuzzle.png",
+      category: "Trending",
+      url: "javascript: fetch('https://cdn.jsdelivr.net/gh/ading2210/edpuzzle-answers@latest/script.js').then(r => r.text()).then(r => eval(r))",
+      requiresAdBlock: false,
+      lastVerified: "2024-02-01",
+      isBookmarklet: true,
+      className: "ring-2 ring-purple-400/80 ring-offset-2 hover:ring-purple-600 transition-all duration-500 bg-gradient-to-r from-purple-100 to-white"
+    },
+    {
       name: "Request Tools",
       description: "Need help with Windows/Office activation, game tools, or any other software? Email me for personalized assistance - I'm here to help you with all your tech needs!",
       icon: (
@@ -62,6 +73,103 @@ function Tools() {
       category: "Math",
       url: "https://www.symbolab.com",
       requiresAdBlock: false
+    },
+    {
+      name: "SpotX",
+      description: "Enhanced Spotify desktop client for Windows with additional features.",
+      icon: "/icons/tools/spotx.png",
+      category: "Media",
+      url: "https://github.com/amd64fox/SpotX",
+      requiresAdBlock: false,
+      lastVerified: "2024-02-01"
+    },
+    {
+      name: "xManager",
+      description: "Advanced Android app manager with enhanced features.",
+      icon: "/icons/tools/xmanager.png",
+      category: "Mobile",
+      url: "https://github.com/xManager-App/xManager",
+      requiresAdBlock: false,
+      lastVerified: "2024-02-01"
+    },
+    {
+      name: "Mobilism",
+      description: "Community forum for mobile resources and discussions.",
+      icon: "/icons/tools/mobilism.png",
+      category: "Mobile",
+      url: "https://forum.mobilism.org",
+      requiresAdBlock: true,
+      lastVerified: "2024-02-01"
+    },
+    {
+      name: "IHaveNoTV",
+      description: "Free documentary streaming platform with diverse content.",
+      icon: "/icons/tools/ihavenotv.png",
+      category: "Media",
+      url: "https://ihavenotv.com",
+      requiresAdBlock: true,
+      lastVerified: "2024-02-01"
+    },
+    {
+      name: "Library Genesis",
+      description: "Digital library for academic textbooks and literature.",
+      icon: "/icons/tools/libgen.png",
+      category: "Books",
+      url: "https://libgen.is",
+      requiresAdBlock: true,
+      lastVerified: "2024-02-01"
+    },
+    {
+      name: "MathPapa",
+      description: "Algebra calculator and solver with detailed steps.",
+      icon: "/icons/tools/mathpapa.png",
+      category: "Math",
+      url: "https://www.mathpapa.com",
+      requiresAdBlock: false
+    },
+    {
+      name: "Clever",
+      description: "School resource portal for accessing educational tools and applications.",
+      icon: "/icons/tools/clever.png",
+      category: "School",
+      url: "https://clever.com",
+      requiresAdBlock: false
+    },
+    {
+      name: "Rivestream",
+      description: "Stream movies, TV shows, K-dramas, and anime. Ad-free streaming experience.",
+      icon: "/icons/tools/rivestream.png",
+      category: "Streaming",
+      url: "https://rivestream.live",
+      requiresAdBlock: true,
+      warning: "⚠️ Use AdBlock for safe browsing. Some content may be region-restricted."
+    },
+    {
+      name: "Miruro",
+      description: "Watch anime, movies, and TV shows online. High-quality streaming service.",
+      icon: "/icons/tools/miruro.png",
+      category: "Streaming",
+      url: "https://www.miruro.tv",
+      requiresAdBlock: true,
+      warning: "⚠️ AdBlock required for safe browsing. VPN recommended for better access."
+    },
+    {
+      name: "STEAMRIP",
+      description: "Download portal for PC games. Clean files, no mining.",
+      icon: "/icons/tools/steamrip.png",
+      category: "Games",
+      url: "https://steamrip.com",
+      requiresAdBlock: true,
+      warning: "⚠️ Use antivirus and scan downloads. AdBlock required."
+    },
+    {
+      name: "FitGirl Repacks",
+      description: "Highly compressed game repacks. Trusted and reliable.",
+      icon: "/icons/tools/fitgirl.png",
+      category: "Games",
+      url: "https://fitgirl-repacks.site",
+      requiresAdBlock: true,
+      warning: "⚠️ Use VPN when downloading torrents. Not on home/school network."
     }
   ];
 
@@ -325,94 +433,115 @@ function Tools() {
             {filteredTools.length > 0 ? (
               filteredTools.map((tool, index) => (
                 <div
-                  key={index}
-                  className="bg-purple-50 p-6 rounded-lg border border-purple-100 flex flex-col hover:shadow-lg transition-all duration-300 hover:-translate-y-1 transform"
+                  key={tool.name}
+                  className={`bg-white rounded-lg shadow-lg overflow-hidden ${
+                    tool.name === "🔥 Edpuzzle Helper"
+                      ? "border-2 border-transparent bg-gradient-to-r from-purple-500/10 via-pink-500/10 to-purple-500/10 hover:from-purple-500/20 hover:via-pink-500/20 hover:to-purple-500/20 transition-all duration-500 shadow-[0_0_15px_rgba(168,85,247,0.2)] hover:shadow-[0_0_20px_rgba(168,85,247,0.4)]"
+                      : ""
+                  }`}
                 >
-                  <div className="flex items-start gap-4 mb-4">
-                    <div className="flex items-center gap-4">
-                      {typeof tool.icon === 'string' ? (
-                        <img src={tool.icon} alt={`${tool.name} icon`} className="w-12 h-12 rounded-lg" />
-                      ) : (
-                        <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
-                          {tool.icon}
-                        </div>
-                      )}
-                    </div>
-                    <div className="flex-1">
-                      <div className="flex items-center justify-between">
-                        <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
-                        <div className="flex gap-2">
-                          <button
-                            onClick={() => toggleFavorite(tool.name)}
-                            className={`p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 ${
-                              favorites.includes(tool.name) ? 'text-purple-700' : 'text-purple-500'
-                            } hover:text-purple-700`}
-                            title={favorites.includes(tool.name) ? 'Remove from favorites' : 'Add to favorites'}
-                            style={{ backgroundColor: 'white' }}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                              <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
-                            </svg>
-                          </button>
-                          <button
-                            onClick={() => handleCopy(tool.url, tool.isEmail)}
-                            className="p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 text-purple-500 hover:text-purple-700"
-                            title="Copy link"
-                            style={{ backgroundColor: 'white' }}
-                          >
-                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
-                              <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
-                              <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
-                            </svg>
-                          </button>
-                        </div>
+                  <div className="p-6">
+                    <div className="flex items-start gap-4 mb-4">
+                      <div className="flex items-center gap-4">
+                        {typeof tool.icon === 'string' ? (
+                          <img src={tool.icon} alt={`${tool.name} icon`} className="w-12 h-12 rounded-lg" />
+                        ) : (
+                          <div className="w-12 h-12 rounded-lg bg-purple-100 flex items-center justify-center text-purple-600">
+                            {tool.icon}
+                          </div>
+                        )}
                       </div>
-                      <span className="inline-block bg-purple-200 text-purple-800 text-sm px-2 py-1 rounded mt-1">
-                        {tool.category}
-                      </span>
+                      <div className="flex-1">
+                        <div className="flex items-center justify-between">
+                          <h2 className="text-2xl font-semibold text-purple-900">{tool.name}</h2>
+                          <div className="flex gap-2">
+                            <button
+                              onClick={() => toggleFavorite(tool.name)}
+                              className={`p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 ${
+                                favorites.includes(tool.name) ? 'text-purple-700' : 'text-purple-500'
+                              } hover:text-purple-700`}
+                              title={favorites.includes(tool.name) ? 'Remove from favorites' : 'Add to favorites'}
+                              style={{ backgroundColor: 'white' }}
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path fillRule="evenodd" d="M3.172 5.172a4 4 0 015.656 0L10 6.343l1.172-1.171a4 4 0 115.656 5.656L10 17.657l-6.828-6.829a4 4 0 010-5.656z" clipRule="evenodd" />
+                              </svg>
+                            </button>
+                            <button
+                              onClick={() => handleCopy(tool.url, tool.isEmail)}
+                              className="p-1.5 rounded hover:bg-purple-100 transition-colors duration-200 text-purple-500 hover:text-purple-700"
+                              title="Copy link"
+                              style={{ backgroundColor: 'white' }}
+                            >
+                              <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                <path d="M9 2a2 2 0 00-2 2v8a2 2 0 002 2h6a2 2 0 002-2V6.414A2 2 0 0016.414 5L14 2.586A2 2 0 0012.586 2H9z" />
+                                <path d="M3 8a2 2 0 012-2v10h8a2 2 0 01-2 2H5a2 2 0 01-2-2V8z" />
+                              </svg>
+                            </button>
+                          </div>
+                        </div>
+                        <span className="inline-block bg-purple-200 text-purple-800 text-sm px-2 py-1 rounded mt-1">
+                          {tool.category}
+                        </span>
+                      </div>
                     </div>
-                  </div>
-                  <p className="text-purple-800 mb-4 flex-1">
-                    {tool.description}
-                  </p>
-                  <div className="flex items-center text-sm text-purple-600 mb-2">
-                    <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
-                      <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
-                    </svg>
-                    Last verified: {new Date(tool.lastVerified).toLocaleDateString()}
-                  </div>
-                  {tool.warning && (
-                    <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-yellow-800 text-sm">
-                      {tool.warning}
+                    <p className="text-purple-800 mb-4 flex-1">
+                      {tool.description}
+                    </p>
+                    <div className="flex items-center text-sm text-purple-600 mb-2">
+                      <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" viewBox="0 0 20 20" fill="currentColor">
+                        <path fillRule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clipRule="evenodd" />
+                      </svg>
+                      Last verified: {new Date(tool.lastVerified).toLocaleDateString()}
                     </div>
-                  )}
-                  {tool.requiresAdBlock && !hasUblock && (
-                    <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
-                      ⚠️ This site requires uBlock Origin for safe access
-                    </div>
-                  )}
-                  <button
-                    onClick={() => handleCopy(tool.url, tool.isEmail)}
-                    className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
-                  >
-                    {tool.isEmail ? (
-                      <>
-                        <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 24 24" fill="currentColor">
-                          <path d="M1.5 8.67v8.58a3 3 0 003 3h15a3 3 0 003-3V8.67l-8.928 5.493a3 3 0 01-3.144 0L1.5 8.67z" />
-                          <path d="M22.5 6.908V6.75a3 3 0 00-3-3h-15a3 3 0 00-3 3v.158l9.714 5.978a1.5 1.5 0 001.572 0L22.5 6.908z" />
-                        </svg>
-                        Email me at nxtcarson@gmail.com
-                      </>
-                    ) : (
-                      <>
+                    {tool.warning && (
+                      <div className="bg-yellow-50 border border-yellow-200 rounded p-3 mb-4 text-yellow-800 text-sm">
+                        {tool.warning}
+                      </div>
+                    )}
+                    {tool.requiresAdBlock && !hasUblock && (
+                      <div className="bg-red-50 border border-red-200 rounded p-3 mb-4 text-red-800 text-sm">
+                        ⚠️ This site requires uBlock Origin for safe access
+                      </div>
+                    )}
+                    {tool.isBookmarklet ? (
+                      <a
+                        href={tool.url}
+                        className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md cursor-grab"
+                        draggable="true"
+                        onClick={(e) => e.preventDefault()}
+                      >
                         <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
                           <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
                           <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
                         </svg>
-                        Open {tool.name}
-                      </>
+                        Edpuzzle Helper
+                      </a>
+                    ) : (
+                      <button
+                        onClick={() => handleCopy(tool.url, tool.isEmail)}
+                        className="bg-white hover:bg-purple-100 text-purple-600 font-semibold py-2 px-4 rounded border border-purple-200 transition duration-200 flex items-center justify-center gap-2 hover:shadow-md"
+                      >
+                        {tool.isEmail ? (
+                          <>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M2.003 5.884L10 9.882l7.997-3.998A2 2 0 0016 4H4a2 2 0 00-1.997 1.884z" />
+                              <path d="M18 8.118l-8 4-8-4V14a2 2 0 002 2h12a2 2 0 002-2V8.118z" />
+                            </svg>
+                            Send Email
+                          </>
+                        ) : (
+                          <>
+                            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                              <path d="M11 3a1 1 0 100 2h2.586l-6.293 6.293a1 1 0 101.414 1.414L15 6.414V9a1 1 0 102 0V4a1 1 0 00-1-1h-5z" />
+                              <path d="M5 5a2 2 0 00-2 2v8a2 2 0 002 2h8a2 2 0 002-2v-3a1 1 0 10-2 0v3H5V7h3a1 1 0 000-2H5z" />
+                            </svg>
+                            Copy Link
+                          </>
+                        )}
+                      </button>
                     )}
-                  </button>
+                  </div>
                 </div>
               ))
             ) : (
