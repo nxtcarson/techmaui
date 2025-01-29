@@ -1,6 +1,28 @@
 import { Link } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import EdpuzzlePopup from '../components/EdpuzzlePopup';
 
 function Home() {
+  const [showPopup, setShowPopup] = useState(false);
+
+  useEffect(() => {
+    // Check if the user has seen the popup before
+    const hasSeenPopup = localStorage.getItem('hasSeenEdpuzzlePopup');
+    if (!hasSeenPopup) {
+      // Show popup after a short delay
+      const timer = setTimeout(() => {
+        setShowPopup(true);
+      }, 1500);
+      return () => clearTimeout(timer);
+    }
+  }, []);
+
+  const handleClosePopup = () => {
+    setShowPopup(false);
+    // Mark that the user has seen the popup
+    localStorage.setItem('hasSeenEdpuzzlePopup', 'true');
+  };
+
   const features = [
     {
       title: "Ad Blocking",
@@ -76,6 +98,7 @@ function Home() {
 
   return (
     <div className="w-full space-y-8">
+      {showPopup && <EdpuzzlePopup onClose={handleClosePopup} />}
       {/* Hero Section */}
       <div className="bg-white rounded-lg shadow-lg p-8 hover:shadow-xl transition-all duration-300">
         <div className="max-w-3xl mx-auto text-center">
