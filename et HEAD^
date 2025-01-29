@@ -1,0 +1,8 @@
+[33mcommit 66deeab42ac6c992e45404d0e4e218c37495841e[m[33m ([m[1;36mHEAD -> [m[1;32mmain[m[33m)[m
+Author: Your Name <you@example.com>
+Date:   Tue Jan 28 21:51:10 2025 -0500
+
+    feat(tools): enhance Edpuzzle Helper card styling with gradient and glow effects
+
+ src/pages/Tools.jsx | 285 [32m++++++++++++++++++++++++++++++++++++++[m[31m--------------[m
+ 1 file changed, 207 insertions(+), 78 deletions(-)
